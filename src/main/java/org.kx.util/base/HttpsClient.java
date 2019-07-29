@@ -1,4 +1,4 @@
-package org.kx.util;
+package org.kx.util.base;
 
 import com.lianlianpay.lli.common.BaseErrorCode;
 import com.lianlianpay.lli.common.BaseException;

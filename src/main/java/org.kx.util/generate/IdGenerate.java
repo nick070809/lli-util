@@ -1,6 +1,7 @@
-package org.kx.util;
+package org.kx.util.generate;
 
 import org.apache.commons.lang3.StringUtils;
+import org.kx.util.FileUtil;
 import org.kx.util.config.MyCnfig;
 
 import java.io.FileNotFoundException;

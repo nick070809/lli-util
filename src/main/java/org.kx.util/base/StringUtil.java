@@ -1,4 +1,4 @@
-package org.kx.util;
+package org.kx.util.base;
 
 
 import com.alibaba.fastjson.JSONArray;

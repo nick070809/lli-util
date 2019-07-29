@@ -1,9 +1,11 @@
-package org.kx.util;
+package org.kx.util.generate;
 
 
 
 
-import com.alibaba.fastjson.JSON;
+import org.kx.util.ClassUtil;
+import org.kx.util.DateUtil;
+import org.kx.util.base.StringUtil;
 
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
@@ -13,7 +15,7 @@ import java.util.*;
 /**
  * Created by sunkx on 2017/5/11.
  */
-public class GenerateInit {
+public class ObjectGenerate {
     //TODO
     public static String makeNewObj(Class clazz) {
         String name = clazz.getSimpleName();
@@ -111,7 +113,20 @@ public class GenerateInit {
             Class type = method.getParameterTypes()[0];
             try {
                 if (type.equals(String.class)) {
-                    method.invoke(obj, i + "");
+
+                    if(method.getName().endsWith("Currency")){
+                        method.invoke(obj,  "CNY");
+                    }else if(method.getName().endsWith("Country")){
+                        method.invoke(obj,  "CN");
+                    }else if(method.getName().endsWith("Version")){
+                        method.invoke(obj,  "0");
+                    }else if(method.getName().endsWith("OwnSign")){
+                        method.invoke(obj,  "1");
+                    }else if(method.getName().endsWith("ExtendInfo")){
+                        method.invoke(obj,  "{}");
+                    }else{
+                        method.invoke(obj, i + "");
+                    }
                 } else if (type.equals(Integer.class)) {
                     method.invoke(obj, i);
                 } else if (type.equals(Long.class)) {
@@ -148,7 +163,6 @@ public class GenerateInit {
                 ex.printStackTrace();
             }
         }
-        System.out.println(JSON.toJSONString(obj));
         return obj;
     }
 
