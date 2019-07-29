@@ -3,8 +3,6 @@ package org.kx.util.base;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.lianlianpay.lli.common.BaseErrorCode;
-import com.lianlianpay.lli.common.BaseException;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

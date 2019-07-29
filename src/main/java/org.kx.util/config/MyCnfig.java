@@ -15,4 +15,9 @@ public class MyCnfig {
     public  final static String JAR_COMPARE_FILE = "/Users/xianguang/temp/jarCompare/diff.txt";
 
 
+    public  static  boolean DDL_NEED_DB = false ;
+
+
+
+
 }

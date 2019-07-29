@@ -1,7 +1,5 @@
 package org.kx.util.base;
 
-import com.lianlianpay.lli.common.BaseErrorCode;
-import com.lianlianpay.lli.common.BaseException;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;

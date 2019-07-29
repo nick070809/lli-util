@@ -1,8 +1,8 @@
 package org.kx.util.mail;
 
-import com.lianlianpay.lli.common.BaseErrorCode;
-import com.lianlianpay.lli.common.BaseException;
 import org.apache.commons.lang3.StringUtils;
+import org.kx.util.base.BaseErrorCode;
+import org.kx.util.base.BaseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

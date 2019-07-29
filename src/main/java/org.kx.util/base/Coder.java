@@ -1,7 +1,6 @@
 package org.kx.util.base;
 
-import com.lianlianpay.lli.common.BaseErrorCode;
-import com.lianlianpay.lli.common.BaseException;
+
 import org.apache.log4j.Logger;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
