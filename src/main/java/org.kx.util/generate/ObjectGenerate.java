@@ -1,8 +1,6 @@
 package org.kx.util.generate;
 
-
-
-
+import com.alibaba.fastjson.JSON;
 import org.kx.util.ClassUtil;
 import org.kx.util.DateUtil;
 import org.kx.util.base.StringUtil;
@@ -123,7 +121,10 @@ public class ObjectGenerate {
                     }else if(method.getName().endsWith("OwnSign")){
                         method.invoke(obj,  "1");
                     }else if(method.getName().endsWith("ExtendInfo")){
-                        method.invoke(obj,  "{}");
+                        HashMap vv = new HashMap();
+                        vv.put("testKey","testValue");
+
+                        method.invoke(obj,  JSON.toJSONString(vv));
                     }else{
                         method.invoke(obj, i + "");
                     }
