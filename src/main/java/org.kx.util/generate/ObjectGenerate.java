@@ -5,6 +5,7 @@ import org.kx.util.ClassUtil;
 import org.kx.util.DateUtil;
 import org.kx.util.base.BaseException;
 import org.kx.util.base.StringUtil;
+import org.kx.util.dto.Seller;
 
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
@@ -14,7 +15,7 @@ import java.util.*;
 /**
  * Created by sunkx on 2017/5/11.
  */
-public class ObjectGenerate {
+public class ObjectGenerate<T> {
     //TODO
     public static String makeNewObj(Class clazz) {
         String name = clazz.getSimpleName();
@@ -103,6 +104,27 @@ public class ObjectGenerate {
         return sb.toString();
     }
 
+
+    public List<T> initListObject(T t,int size){
+        try {
+            List list = new ArrayList(size);
+            for(int i = 0 ;i<size;i++){
+                Object obj = initValue(((Class)t).getName());
+                list.add(obj);
+            }
+            return  list;
+        }catch (Exception ex){
+            throw  new BaseException(ex) ;
+        }
+
+    }
+
+    //TODO
+    public static Object initValue(String name) throws ClassNotFoundException {
+
+        Class clazz = Class.forName(name);
+        return initValue(clazz);
+    }
     //TODO
     public static Object initValue(Class clazz) {
         try {
@@ -209,7 +231,8 @@ public class ObjectGenerate {
 
 
     public static void main(String[] args) {
-
+        List<Seller> list = new  ObjectGenerate().initListObject(Seller.class,2);
+        System.out.println(JSON.toJSONString(list));
     }
 }
 
