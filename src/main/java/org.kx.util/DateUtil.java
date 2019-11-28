@@ -91,5 +91,6 @@ public class DateUtil {
         Thread.sleep(700);
         Date dd1= new Date();
         System.out.println(getCostTime(dd1,dd));
+         System.out.println("[222".startsWith("\\["));
     }
 }

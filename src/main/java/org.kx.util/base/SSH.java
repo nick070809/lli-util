@@ -2,10 +2,12 @@ package org.kx.util.base;
 
 import ch.ethz.ssh2.Connection;
 import ch.ethz.ssh2.Session;
+import com.alibaba.fastjson.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.Map;
 
 /**
  * Description ： Created by  xianguang.skx Since 2019/7/9
@@ -22,8 +24,20 @@ public class SSH {
     private Connection conn = null;
     private Session session = null;
 
+
+
+
     public SSH(String ipaddr) {
         this.ip = ipaddr;
+        if(pass == null || name == null){
+            try {
+                JSONObject j = LogX.readAllData("/Users/xianguang/temp/data/private.log");
+                pass = (String)j.get("pass");
+                name = (String)j.get("name");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         this.user = name;
         this.password = pass;
         this.charset = Charset.defaultCharset().toString();
@@ -91,6 +105,11 @@ public class SSH {
 
 
 
+    public static void main(String[] args) {
+        Map<String,String> map = System.getenv();
+
+        System.out.println(map.get("USERNAME"));
+    }
 
 
 

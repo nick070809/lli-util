@@ -10,9 +10,9 @@ import java.lang.reflect.Method;
  * Description ： Created by  xianguang.skx Since 2019/7/30
  */
 
-public class IllegalReadObj {
+public class IllegalReadObj<T> {
 
-    public static Object getPrivateProperty(Object bean, String property) throws Exception {
+    public static <T>Object getPrivateProperty(Object bean, String property) throws Exception {
         Class<?> clazz = bean.getClass();
         Field[] fs = clazz.getDeclaredFields();// 获取PrivateClass所有属性
         for (int i = 0; i < fs.length; i++) {
@@ -81,7 +81,7 @@ public class IllegalReadObj {
        /* Object object =  new  IllegalReadObj().getPrivateProperty(new PrivateClass(),"id");
         System.out.println(object);*/
         PrivateClass dd = new PrivateClass();
-        System.out.println(IllegalReadObj.invokeSetNullMethod(dd, "seturl", String.class));
+       // System.out.println(IllegalReadObj.invokeSetNullMethod(dd, "seturl", String.class));
         System.out.println(IllegalReadObj.invokePrivateMethod(dd, "seturl", "3"));
         //System.out.println(IllegalReadObj.invokePrivateMethod(dd, "getUrl", "3",32));
 

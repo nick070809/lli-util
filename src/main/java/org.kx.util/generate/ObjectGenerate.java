@@ -3,6 +3,7 @@ package org.kx.util.generate;
 import com.alibaba.fastjson.JSON;
 import org.kx.util.ClassUtil;
 import org.kx.util.DateUtil;
+import org.kx.util.base.BaseException;
 import org.kx.util.base.StringUtil;
 
 import java.lang.reflect.Method;
@@ -103,68 +104,73 @@ public class ObjectGenerate {
     }
 
     //TODO
-    public static Object initValue(Class clazz) throws IllegalAccessException, InstantiationException {
-        Object obj = clazz.newInstance();
-        List<Method> list = ClassUtil.getAllSetMethod(clazz);
-        int i = 1;
-        for (Method method : list) {
-            Class type = method.getParameterTypes()[0];
-            try {
-                if (type.equals(String.class)) {
+    public static Object initValue(Class clazz) {
+        try {
+            Object obj = clazz.newInstance();
+            List<Method> list = ClassUtil.getAllSetMethod(clazz);
+            int i = 1;
+            for (Method method : list) {
+                Class type = method.getParameterTypes()[0];
+                try {
+                    if (type.equals(String.class)) {
 
-                    if(method.getName().endsWith("Currency")){
-                        method.invoke(obj,  "CNY");
-                    }else if(method.getName().endsWith("Country")){
-                        method.invoke(obj,  "CN");
-                    }else if(method.getName().endsWith("Version")){
-                        method.invoke(obj,  "0");
-                    }else if(method.getName().endsWith("OwnSign")){
-                        method.invoke(obj,  "1");
-                    }else if(method.getName().endsWith("ExtendInfo")){
-                        HashMap vv = new HashMap();
-                        vv.put("testKey","testValue");
+                        if (method.getName().endsWith("Currency")) {
+                            method.invoke(obj, "CNY");
+                        } else if (method.getName().endsWith("Country")) {
+                            method.invoke(obj, "CN");
+                        } else if (method.getName().endsWith("Version")) {
+                            method.invoke(obj, "0");
+                        } else if (method.getName().endsWith("OwnSign")) {
+                            method.invoke(obj, "1");
+                        } else if (method.getName().endsWith("ExtendInfo")) {
+                            HashMap vv = new HashMap();
+                            vv.put("testKey", "testValue");
 
-                        method.invoke(obj,  JSON.toJSONString(vv));
-                    }else{
-                        method.invoke(obj, i + "");
+                            method.invoke(obj, JSON.toJSONString(vv));
+                        } else {
+                            method.invoke(obj, i + "");
+                        }
+                    } else if (type.equals(Integer.class)) {
+                        method.invoke(obj, i);
+                    } else if (type.equals(Long.class)) {
+                        method.invoke(obj, (long)i);
+                    } else if (type.equals(Double.class)) {
+                        method.invoke(obj, i + 0.2);
+                    } else if (type.equals(Long.TYPE)) {
+                        method.invoke(obj, (long)i);
+                    } else if (type.equals(Integer.TYPE)) {
+                        method.invoke(obj, i);
+                    } else if (type.equals(Short.TYPE)) {
+                        method.invoke(obj, (short)i);
+                    } else if (type.equals(Float.TYPE)) {
+                        method.invoke(obj, i + 0.2);
+                    } else if (type.equals(Date.class)) {
+                        method.invoke(obj, new Date());
+                    } else if (type.equals(Timestamp.class)) {
+                        method.invoke(obj, new Date());
+                    } else if (type.equals(Double.TYPE)) {
+                        method.invoke(obj, i + 0.2);
+                    } else if (type.equals(Boolean.TYPE)) {
+                        method.invoke(obj, false);
+                    } else if (type.equals(Character.TYPE)) {
+                        method.invoke(obj, "c");
+                    } else if (type.equals(BigDecimal.class)) {
+                        method.invoke(obj, new BigDecimal(5));
+                    } else if (type.equals(ArrayList.class)) {
+                        method.invoke(obj, new ArrayList(5));
+                    } else if (type.equals(Map.class)) {
+                        method.invoke(obj, new HashMap(5));
                     }
-                } else if (type.equals(Integer.class)) {
-                    method.invoke(obj, i);
-                } else if (type.equals(Long.class)) {
-                    method.invoke(obj, (long) i);
-                } else if (type.equals(Double.class)) {
-                    method.invoke(obj, i + 0.2);
-                } else if (type.equals(Long.TYPE)) {
-                    method.invoke(obj, (long) i);
-                } else if (type.equals(Integer.TYPE)) {
-                    method.invoke(obj, i);
-                } else if (type.equals(Short.TYPE)) {
-                    method.invoke(obj, (short) i);
-                } else if (type.equals(Float.TYPE)) {
-                    method.invoke(obj, i + 0.2);
-                } else if (type.equals(Date.class)) {
-                    method.invoke(obj, new Date());
-                } else if (type.equals(Timestamp.class)) {
-                    method.invoke(obj, new Date());
-                } else if (type.equals(Double.TYPE)) {
-                    method.invoke(obj, i + 0.2);
-                } else if (type.equals(Boolean.TYPE)) {
-                    method.invoke(obj, false);
-                } else if (type.equals(Character.TYPE)) {
-                    method.invoke(obj, "c");
-                } else if (type.equals(BigDecimal.class)) {
-                    method.invoke(obj, new BigDecimal(5));
-                }else if (type.equals(ArrayList.class)) {
-                    method.invoke(obj, new ArrayList(5));
-                }else if (type.equals(Map.class)) {
-                    method.invoke(obj, new HashMap(5));
+                    i++;
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
-                i++;
-            } catch (Exception ex) {
-                ex.printStackTrace();
             }
+            return obj;
+        }catch (Exception ex){
+            throw new BaseException(ex);
         }
-        return obj;
+
     }
 
 

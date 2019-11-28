@@ -8,10 +8,9 @@ import com.jcraft.jsch.*;
 import org.apache.log4j.Logger;
 import org.kx.util.FileUtil;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.Properties;
+import java.util.Vector;
 
 /**
  * SFTP帮助类
@@ -22,8 +21,12 @@ public class SFTPUtil {
 
     private  static Logger logger = Logger.getLogger(SFTPUtil.class);
 
+    static String PATHSEPARATOR = "/";
+
+
     public static void downloadSftpFile(String ftpHost,
                                        String ftpPath,String destFile) throws JSchException {
+
         Session session = null;
         Channel channel = null;
 
@@ -45,6 +48,16 @@ public class SFTPUtil {
 
 
         try {
+
+            File file = new File(destFile);
+            //创建文件
+            if(!file.exists()){
+                file.getParentFile().mkdirs();
+                file.createNewFile();
+            }
+
+
+
             InputStream inputStream = chSftp.get("/home/xianguang.skx/"+ftpPath);
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"utf-8"));
             String line = null;
@@ -54,6 +67,9 @@ public class SFTPUtil {
             }
 
             FileUtil.writeStringToFile(buffer.toString(),destFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+            logger.info("create file error.");
         } catch (Exception e) {
             e.printStackTrace();
             logger.info("download error.");
@@ -65,10 +81,79 @@ public class SFTPUtil {
         }
 
     }
+
+
+    public static void downloadSftpDir(  String ftpHost,
+                                       String ftpPath,   String destPath) throws JSchException {
+
+        Session session = null;
+        Channel channel = null;
+
+        JSch jsch = new JSch();
+        session = jsch.getSession(SSH.name, ftpHost, 22);
+        session.setPassword(SSH.pass);
+        session.setTimeout(100000);
+        Properties config = new Properties();
+        config.put("StrictHostKeyChecking", "no");
+        session.setConfig(config);
+        if(!session.isConnected())
+            session.connect();
+
+        channel = session.openChannel("sftp");
+
+        if(!channel.isConnected())
+            channel.connect();
+        ChannelSftp chSftp = (ChannelSftp) channel;
+
+
+        try {
+            recursiveFolderDownload(ftpPath,destPath, chSftp) ;
+         }  catch (Exception e) {
+            e.printStackTrace();
+            logger.info("download error.");
+        } finally {
+            //关闭持久连接  谨慎使用  详细见下面说明
+            chSftp.quit();
+            channel.disconnect();
+            session.disconnect();
+        }
+
+    }
+
+
+    private static void recursiveFolderDownload(String sourcePath, String destinationPath,ChannelSftp channelSftp) throws SftpException {
+        Vector<ChannelSftp.LsEntry> fileAndFolderList = channelSftp.ls(sourcePath); // Let list of folder content
+
+        //Iterate through list of folder content
+        for (ChannelSftp.LsEntry item : fileAndFolderList) {
+
+            if (!item.getAttrs().isDir()) { // Check if it is a file (not a directory).
+                if (!(new File(destinationPath + PATHSEPARATOR + item.getFilename())).exists()
+                    || (item.getAttrs().getMTime() > Long
+                    .valueOf(new File(destinationPath + PATHSEPARATOR + item.getFilename()).lastModified()
+                        / (long) 1000)
+                    .intValue())) { // Download only if changed later.
+
+                    new File(destinationPath + PATHSEPARATOR + item.getFilename());
+                    channelSftp.get(sourcePath + PATHSEPARATOR + item.getFilename(),
+                        destinationPath + PATHSEPARATOR + item.getFilename()); // Download file from source (source filename, destination filename).
+                }
+            } else if (!(".".equals(item.getFilename()) || "..".equals(item.getFilename()))) {
+                new File(destinationPath + PATHSEPARATOR + item.getFilename()).mkdirs(); // Empty folder copy.
+                recursiveFolderDownload(sourcePath + PATHSEPARATOR + item.getFilename(),
+                    destinationPath + PATHSEPARATOR + item.getFilename(),channelSftp); // Enter found folder on server to read its contents and create locally.
+            }
+        }
+    }
+
+
+
+
+
     public static void main(String[] args) throws JSchException {
 
 
-        //   SFTPUtil.downloadSftpFile("11.162.251.91", SSH.name,SSH.pass,22,"/home/xianguang.skx/jar.txt");
+           SFTPUtil.downloadSftpDir("11.162.251.91", "","/home/xianguang.skx/");
 
     }
 }

@@ -25,3 +25,4 @@ build/
 nbbuild/
 dist/
 nbdist/
+src/main/java/org.kx.util/ssh

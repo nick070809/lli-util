@@ -14,17 +14,17 @@ import java.util.regex.Pattern;
  * Description ： Created by  xianguang.skx Since 2019/7/28
  */
 
-public class LogSearch {
+public class LogSearchParse {
     public static void main(String[] args) throws Exception{
         readDiff(MyCnfig.LOG_FILE);
     }
 
 
-    public   static void readDiff(String filePath) throws Exception {
+    public   static String readDiff(String filePath) throws Exception {
 
         InputStream is = new FileInputStream(filePath);
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-
+        StringBuilder sbt  = new StringBuilder();
         String ipline = null;
         int ii =0,temp = 0;
         for(String line = reader.readLine(); line != null; line = reader.readLine()) {
@@ -45,20 +45,21 @@ public class LogSearch {
                 continue;
             }
             if(temp != ii){
-                System.out.println("");
-                System.out.println(getIp(ipline));
+                sbt.append("$").append(getIp(ipline));
                 ii =temp ;
             }
-            System.out.println(line);
-
-
-
+            sbt.append("$").append(line);
         }
 
 
         reader.close();
         is.close();
+        return  sbt.toString();
     }
+
+
+
+
 
 
     public  static boolean isNumeric(String str){

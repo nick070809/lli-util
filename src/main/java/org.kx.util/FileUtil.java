@@ -24,6 +24,22 @@ public class FileUtil {
         return file;
     }
 
+    public static boolean createFile(File file) throws IOException {
+        if (!file.getParentFile().exists()) {
+            createDir(file.getParentFile());
+        }
+        return file.createNewFile();
+    }
+
+
+    public static void createDir(File dir) {
+        if (!dir.getParentFile().exists()) {
+            createDir(dir.getParentFile());
+        }
+        dir.mkdir();
+    }
+
+
     /**
      * 将文本文件中的内容读入到buffer中
      */

@@ -61,7 +61,7 @@ public class LogX {
 
 
 
-    private static JSONObject readAllData(String file_path) throws IOException {
+    public static JSONObject readAllData(String file_path) throws IOException {
 
         String id_str = FileUtil.readFile(file_path);
         if(id_str.endsWith("\n")){
