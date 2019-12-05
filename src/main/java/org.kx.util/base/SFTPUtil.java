@@ -24,15 +24,15 @@ public class SFTPUtil {
     static String PATHSEPARATOR = "/";
 
 
-    public static void downloadSftpFile(String ftpHost,
+    public static void downloadSftpFile(SSH ssh ,String ftpHost,
                                        String ftpPath,String destFile) throws JSchException {
 
         Session session = null;
         Channel channel = null;
 
         JSch jsch = new JSch();
-        session = jsch.getSession(SSH.name, ftpHost, 22);
-        session.setPassword(SSH.pass);
+        session = jsch.getSession(ssh.getUser(), ftpHost, 22);
+        session.setPassword(ssh.getPassword());
         session.setTimeout(100000);
         Properties config = new Properties();
         config.put("StrictHostKeyChecking", "no");
@@ -147,13 +147,41 @@ public class SFTPUtil {
     }
 
 
+    public static void uploadSftpFile(String ftpHost ,String remoteFilepath, String localFilePath) throws JSchException, SftpException  {
+        Session session = null;
+        Channel channel = null;
+
+        JSch jsch = new JSch();
+        session = jsch.getSession(SSH.name, ftpHost, 22);
+        session.setPassword(SSH.pass);
+        session.setTimeout(100000);
+
+        uploadSftpFile(remoteFilepath, localFilePath, session);
+    }
 
 
 
-    public static void main(String[] args) throws JSchException {
+    private static void uploadSftpFile(String remoteFilepath, String localFilePath, Session session) throws JSchException, SftpException {
+        Channel channel = session.openChannel("sftp");
+        channel.connect();
+        ChannelSftp chSftp = (ChannelSftp) channel;
+
+        try {
+            chSftp.put(localFilePath, remoteFilepath);
+        } finally {
+            chSftp.quit();
+            channel.disconnect();
+            session.disconnect();
+        }
+    }
 
 
-           SFTPUtil.downloadSftpDir("11.162.251.91", "","/home/xianguang.skx/");
+
+    public static void main(String[] args) throws JSchException, SftpException {
+
+
+          // SFTPUtil.downloadSftpDir("11.162.251.91", "","/home/xianguang.skx/");
+        SFTPUtil.uploadSftpFile("11.159.179.82", "/Users/xianguang/IdeaProjects/nick070809/xian.app/xian/target/xian.app.jar","/home/xianguang.skx/xian/xian.app.jar");
 
     }
 }

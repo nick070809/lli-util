@@ -18,7 +18,7 @@ public class RemoteJarCompare {
         String userName = "xianguang.skx";
         String oldIp = "11.162.251.91";
         String newIp = "100.88.238.120";
-        String defaultPath ="/home/admin/settle-center/target/settle-center/BOOT-INF/lib";
+        String defaultPath ="/home/admin/**/lib";
 
 
         jFramePass.getOldIp().setText(oldIp);

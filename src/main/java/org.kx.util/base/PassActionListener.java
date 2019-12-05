@@ -51,10 +51,10 @@ public class PassActionListener implements ActionListener {
                 @Override
                 public void run() {
                     try {
-                        new SSH(oldIp).SSHexec(libPathCmd_);
-                        new SSH(targetIp).SSHexec(libPathCmd_);
-                        SFTPUtil.downloadSftpFile(oldIp, srcFile, old_file);
-                        SFTPUtil.downloadSftpFile(targetIp, srcFile, new_file);
+                        SSH ssh1 = new SSH(oldIp);ssh1.SSHexec(libPathCmd_);
+                        SSH ssh2 =  new SSH(targetIp);ssh2.SSHexec(libPathCmd_);
+                        SFTPUtil.downloadSftpFile(ssh1,oldIp, srcFile, old_file);
+                        SFTPUtil.downloadSftpFile(ssh2,targetIp, srcFile, new_file);
                         Map<String, String> old_ = reWriteFile(old_file);
                         Map<String, String> new_ = reWriteFile(new_file);
                         String filePath = WriteJarVersion.writeDiff(old_, new_);

@@ -140,10 +140,20 @@ public class WriteJarVersion {
 
     public static String  writeDiff(Map<String,String > map1 , Map<String,String > map2 ) throws Exception {
 
+        String filePath = MyCnfig.JAR_COMPARE_FILE;
+        FileUtil.writeStringToFile(getDiffContent(map1,map2),filePath);
+
+        return filePath;
+
+    }
+
+
+    public static String  getDiffContent(Map<String,String > map1 , Map<String,String > map2 ) throws Exception {
+
 
 
         StringBuilder b = new StringBuilder() ;
-        StringBuilder a = new StringBuilder() ;
+        StringBuilder a = new StringBuilder("result : \n") ;
         StringBuilder c = new StringBuilder() ;
 
         for (Map.Entry<String,String> entry : map1.entrySet()) {
@@ -167,12 +177,8 @@ public class WriteJarVersion {
             }
         }
 
-
         a.append(b).append(c);
-        String filePath = MyCnfig.JAR_COMPARE_FILE;
-        FileUtil.writeStringToFile(a.toString(),filePath);
-
-        return filePath;
+        return a.toString();
 
     }
 

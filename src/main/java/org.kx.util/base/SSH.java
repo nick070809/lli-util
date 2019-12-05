@@ -19,6 +19,7 @@ public class SSH {
     public  static String name ;
     private String charset = null;
     private String ip = null;
+
     private String user = null;
     private String password = null;
     private Connection conn = null;
@@ -40,6 +41,14 @@ public class SSH {
         }
         this.user = name;
         this.password = pass;
+        this.charset = Charset.defaultCharset().toString();
+    }
+
+
+    public SSH(String ipaddr,String user,String password) {
+        this.ip = ipaddr;
+        this.user = user;
+        this.password = password;
         this.charset = Charset.defaultCharset().toString();
     }
 
@@ -101,6 +110,17 @@ public class SSH {
     }
     private  void connClose(){
         conn.close();
+    }
+
+
+    public String getUser() {
+        return user;
+    }
+
+
+
+    public String getPassword() {
+        return password;
     }
 
 

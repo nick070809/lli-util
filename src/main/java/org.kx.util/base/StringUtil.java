@@ -3,6 +3,7 @@ package org.kx.util.base;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -89,8 +90,40 @@ public class StringUtil {
         return ss.replace("__", "_");
     }
 
+
+
+    /**
+     * 文本长度
+     */
+    public static long getStringLenth(String str) {
+        return str.length();
+    }
+
+
+    /**
+     * 多行合并为一行
+     */
+    public static String mergeLine(String str) {
+       StringBuilder sbt = new StringBuilder();
+       String[] strs = str.split("\n");
+       for(String i :strs){
+           String s= i.trim();
+            if(StringUtils.isNotBlank(s)){
+               if(sbt.length() >0 ){
+                   sbt.append(",").append(s);
+               }else {
+                   sbt.append(s);
+               }
+            }
+       }
+        return sbt.toString();
+    }
+
+
+
     public static void main(String...s){
-        System.out.println(handleFileName("d:\\/32$%^/!@@@!/||11\""));
+        String sss = "erwerw\ndwern\neee";
+        System.out.println(mergeLine(sss));
     }
 
 

@@ -20,10 +20,13 @@ public class IDBSQLFormat {
     }
 
 
-    private  static  String dealStr(String sqls){
+    public   static  String dealStr(String sqls){
         String[] items_ = sqls.split(";");
         StringBuilder sbt = new StringBuilder();
         for(String i :items_){
+            if(StringUtils.isEmpty(i)){
+                continue;
+            }
             sbt.append(dealSql(i)).append(";\n");
         }
         return sbt.toString();
