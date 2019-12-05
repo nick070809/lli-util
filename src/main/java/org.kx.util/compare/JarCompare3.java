@@ -21,7 +21,7 @@ public class JarCompare3 {
 
 
 
-    public void actionPerformed(RemoteMechine remoteMechine) throws Exception {
+    public String actionPerformed(RemoteMechine remoteMechine) throws Exception {
 
         String libPathCmd_ ="ls "+remoteMechine.getLibPath()+" > ~/"+remoteMechine.getTargetTempFile();
 
@@ -34,14 +34,9 @@ public class JarCompare3 {
         SFTPUtil.downloadSftpFile(ssh1,remoteMechine.getOldIp(), remoteMechine.getTargetTempFile(), remoteMechine.getOldLocalFile());
         SFTPUtil.downloadSftpFile(ssh2,remoteMechine.getTargetIp(), remoteMechine.getTargetTempFile(), remoteMechine.getTargetLocalFile());
 
-
-
         Map<String, String> old_ =  reWriteFile(remoteMechine.getOldLocalFile());
         Map<String, String> new_ =  reWriteFile(remoteMechine.getTargetLocalFile());
-
-        String dffContent = WriteJarVersion.getDiffContent(old_, new_);
-        System.out.println(dffContent);
-
+        return  WriteJarVersion.getDiffContent(old_, new_);
     }
 
     public static Map<String,String > reWriteFile(String filePath) throws Exception {
