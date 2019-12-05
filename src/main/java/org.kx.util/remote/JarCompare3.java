@@ -1,4 +1,4 @@
-package org.kx.util.compare;
+package org.kx.util.remote;
 
 import org.kx.util.base.LocalCacheManager;
 import org.kx.util.base.SFTPUtil;
@@ -23,7 +23,7 @@ public class JarCompare3 {
 
     public String actionPerformed(RemoteMechine remoteMechine) throws Exception {
 
-        String libPathCmd_ ="ls "+remoteMechine.getLibPath()+" > ~/"+remoteMechine.getTargetTempFile();
+        String libPathCmd_ ="ls "+remoteMechine.getFilePath()+" > ~/"+remoteMechine.getTargetTempFile();
 
         SSH ssh1 = new SSH(remoteMechine.getOldIp(),remoteMechine.getUserName(),remoteMechine.getUserPass());
         ssh1.SSHexec(libPathCmd_);

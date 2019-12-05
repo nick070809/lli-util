@@ -147,15 +147,13 @@ public class SFTPUtil {
     }
 
 
-    public static void uploadSftpFile(String ftpHost ,String remoteFilepath, String localFilePath) throws JSchException, SftpException  {
+    public static void uploadSftpFile(SSH ssh ,String ftpHost ,String remoteFilepath, String localFilePath) throws JSchException, SftpException  {
         Session session = null;
-        Channel channel = null;
 
         JSch jsch = new JSch();
-        session = jsch.getSession(SSH.name, ftpHost, 22);
-        session.setPassword(SSH.pass);
+        session = jsch.getSession(ssh.getUser(), ftpHost, 22);
+        session.setPassword(ssh.getPassword());
         session.setTimeout(100000);
-
         uploadSftpFile(remoteFilepath, localFilePath, session);
     }
 
@@ -180,8 +178,6 @@ public class SFTPUtil {
     public static void main(String[] args) throws JSchException, SftpException {
 
 
-          // SFTPUtil.downloadSftpDir("11.162.251.91", "","/home/xianguang.skx/");
-        SFTPUtil.uploadSftpFile("11.159.179.82", "/Users/xianguang/IdeaProjects/nick070809/xian.app/xian/target/xian.app.jar","/home/xianguang.skx/xian/xian.app.jar");
 
     }
 }
