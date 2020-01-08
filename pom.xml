@@ -176,6 +176,13 @@
       <version>${springframework.version}</version>
     </dependency>
 
+    <dependency>
+      <groupId>com.github.houbb</groupId>
+      <artifactId>word-checker</artifactId>
+      <version>0.0.1</version>
+    </dependency>
+
+
   </dependencies>
 </project>
 

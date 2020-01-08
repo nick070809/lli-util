@@ -68,7 +68,7 @@ public class HttpsClient  {
 	}
 
 
-	public static String sendModel(String url, String to,Map<String,String> headers) {
+	public static String sendModel(String url, String body,Map<String,String> headers) {
 		if (client == null) {
 			client = new DefaultHttpClient();
 			enableSSL(client);
@@ -87,7 +87,7 @@ public class HttpsClient  {
 			}
 
 				httppost.addHeader(HTTP.CONTENT_TYPE, APPLICATION_JSON);
-				StringEntity se = new StringEntity(to, "utf-8");
+				StringEntity se = new StringEntity(body, "utf-8");
 				se.setContentType(CONTENT_TYPE_TEXT_JSON);
 				se.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE,
 						APPLICATION_JSON));

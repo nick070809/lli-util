@@ -120,6 +120,61 @@ public class StringUtil {
     }
 
 
+
+    /**
+     * 多行合并为等长度数行
+     */
+    public static String mergeLine(String str,long LengthLimit) {
+        //System.out.println(str);
+        StringBuilder sbt = new StringBuilder();
+        String[] strs = str.split("\n");
+        long currentLenth = 1;
+        for (String i : strs) {
+            String s = i.trim();
+            if (StringUtils.isNotBlank(s)) {
+                if(currentLenth != 1){
+                    currentLenth = currentLenth + s.length() +1 ;
+                    if(currentLenth >= LengthLimit){
+                        sbt.append("\n");
+                        currentLenth = 0l;
+                    }else {
+                        sbt.append(",");
+                    }
+                    sbt.append(s);
+                }else {
+                    sbt.append(s);
+                }
+                currentLenth = currentLenth + s.length() +1 ;
+            }
+        }
+        return sbt.toString();
+    }
+
+
+
+
+
+
+    /**
+     *  一行 转多行
+     */
+    public static String toLine(String str) {
+        StringBuilder sbt = new StringBuilder();
+        String[] sss= str.split(",");
+        for (String i : sss) {
+            String s = i.trim();
+            if (StringUtils.isNotBlank(s)) {
+                if (sbt.length() > 0) {
+                    sbt.append("\n").append(s);
+                } else {
+                    sbt.append(s);
+                }
+            }
+        }
+        return sbt.toString();
+    }
+
+
     /**
      * 字符串转化成为16进制字符串
      */
@@ -192,11 +247,14 @@ public class StringUtil {
 
 
     public static void main(String... s) {
-        String sss = "Auth fail";
+        String sss = "683686370273062572\n" +
+                "683656770844521972\n" +
+                "684140032295365432\n" +
+                "682857315747667924";
         String s16 ="0x3233333233343233" ;//strTo16(sss) ;
         System.out.println(s16);
 
-        System.out.println(hexStringToString(s16));
+        System.out.println(mergeLine(sss,50L));
     }
 
 

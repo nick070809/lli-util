@@ -67,6 +67,25 @@ public class FileUtil {
         return sb.toString();
     }
 
+
+
+    /**
+     * 读取第一行
+     */
+    public static String readFirstLine(String filePath) throws IOException {
+        InputStream is = new FileInputStream(filePath);
+        InputStreamReader ireader = new InputStreamReader(is, "UTF-8");
+        String line; // 用来保存每行读取的内容
+        BufferedReader reader = new BufferedReader(ireader);
+        line = reader.readLine(); // 读取第一行
+        reader.close();
+        is.close();
+        return line;
+    }
+
+
+
+
     /**
      * 获取目录下所有的文件
      * @param filePath

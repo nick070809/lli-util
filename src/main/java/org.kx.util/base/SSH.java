@@ -123,7 +123,13 @@ public class SSH {
         return password;
     }
 
+    public String getIp() {
+        return ip;
+    }
 
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
 
     public static void main(String[] args) {
         Map<String,String> map = System.getenv();
