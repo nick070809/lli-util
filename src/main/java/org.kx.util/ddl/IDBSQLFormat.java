@@ -1,6 +1,8 @@
 package org.kx.util.ddl;
 
+import com.github.houbb.word.checker.core.impl.EnWordChecker;
 import org.apache.commons.lang3.StringUtils;
+import org.kx.util.Validator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,20 +28,38 @@ public class IDBSQLFormat {
     public static String dealStr(String sqls) {
         String[] items_ = sqls.split(";");
         StringBuilder sbt = new StringBuilder();
+        StringBuilder warnInfo = new StringBuilder(); //注意
         for (String i : items_) {
             if (StringUtils.isBlank(i)) {
                 continue;
             }
-            sbt.append(dealStr_(i)).append(";\n");
+            List<WordChar> list = getWordChars(i);
+            sbt.append(dealStr_(list)).append(";\n");
+            warnInfo.append(warnStr_(list)).append(";\n");
         }
         return sbt.toString();
     }
 
 
-    public static String dealStr_(String sql) {
-        List<WordChar> list = getWordChars(sql);
-        return parseWorde(list);
+    public static String dealStr_(List<WordChar> list) {
+         return parseWorde(list);
     }
+
+    public static String warnStr_(List<WordChar> list) {
+        StringBuilder sbt = new StringBuilder();
+        for (WordChar wordChar : list) {
+            if(Validator.isChars(wordChar.getWord())) {
+                boolean result = EnWordChecker.getInstance().isCorrect(wordChar.getWord());
+                if (!result) {
+                    String bestWord = EnWordChecker.getInstance().correct(wordChar.getWord());
+                    sbt.append("注意: "+wordChar.getWord()+"可能存在拼写错误，是否想要 : " + bestWord +";\n");
+                }
+            }
+
+        }
+        return sbt.toString();
+    }
+
 
 
     public static List<WordChar> getWordChars(String sql) {

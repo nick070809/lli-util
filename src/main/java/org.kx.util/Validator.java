@@ -128,6 +128,10 @@ public class Validator {
     public static boolean isNum(String str){
         return str.matches("[0-9]+");
     }
+    /**校验全为字母**/
+    public static boolean isChars(String str){
+        return str.matches("[a-zA-Z]+");
+    }
     public static boolean isMobile(String str) {
         Pattern p = null;
         Matcher m = null;
