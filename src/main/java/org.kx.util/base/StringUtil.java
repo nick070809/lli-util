@@ -176,6 +176,28 @@ public class StringUtil {
 
 
     /**
+     * 一行 转多行
+     */
+    public static String getMiddleString(String line, String prx, String sux) {
+
+        if (StringUtils.isBlank(sux)) {
+            if (line.length() > prx.length()) {
+                return line.substring(prx.length());
+            }
+            return null;
+        }
+        if (line.contains(sux)) {
+            String ssss = line.substring(prx.length());
+            return ssss.split(sux)[0];
+        }
+        return null;
+    }
+
+
+
+
+
+    /**
      * 字符串转化成为16进制字符串
      */
     public static String strTo16(String s) {

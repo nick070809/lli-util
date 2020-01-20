@@ -16,6 +16,8 @@ public class IDBSQLFormat {
     static String CN_ = " "; ///中文空格
     static String SPLIT_ = "'"; //分割符号
 
+    static String RIGHTFX = "hj,ts,tc,gmt"; //特定字符过滤
+
     public static void main(String[] args) {
         String ss = "select user_db  from sv_ss where id =  '6305721'  ;update user_db  set status = -1 ,gmt_modified = now() where id =  6305721  ;"
             + "update     fill_db    set status = -1 ,gmt_modified = now()   where id in "
@@ -35,8 +37,9 @@ public class IDBSQLFormat {
             }
             List<WordChar> list = getWordChars(i);
             sbt.append(dealStr_(list)).append(";\n");
-            warnInfo.append(warnStr_(list)).append(";\n");
+            warnInfo.append(warnStr_(list));
         }
+        sbt.append(warnInfo);
         return sbt.toString();
     }
 
@@ -48,11 +51,26 @@ public class IDBSQLFormat {
     public static String warnStr_(List<WordChar> list) {
         StringBuilder sbt = new StringBuilder();
         for (WordChar wordChar : list) {
-            if(Validator.isChars(wordChar.getWord())) {
-                boolean result = EnWordChecker.getInstance().isCorrect(wordChar.getWord());
+            String word =wordChar.getWord() ;
+            if(Validator.isChars(word)) {
+                boolean result = EnWordChecker.getInstance().isCorrect(word);
                 if (!result) {
-                    String bestWord = EnWordChecker.getInstance().correct(wordChar.getWord());
-                    sbt.append("注意: "+wordChar.getWord()+"可能存在拼写错误，是否想要 : " + bestWord +";\n");
+                    String bestWord = EnWordChecker.getInstance().correct(word);
+                    sbt.append("注意: "+wordChar.getWord()+"可能存在拼写错误，是否想要 : " + bestWord +"\n");
+                }
+            }else  if(word.contains("_")){
+                String[] words = word.split("_");
+                for(String w :words){
+                    if(RIGHTFX.contains(w)){
+                        continue;
+                    }
+                    if(Validator.isChars(w)) {
+                        boolean result = EnWordChecker.getInstance().isCorrect(w);
+                        if (!result) {
+                            String bestWord = EnWordChecker.getInstance().correct(w);
+                            sbt.append("注意: " + wordChar.getWord() + "可能存在拼写错误，是否想要 : " + bestWord + "\n");
+                        }
+                    }
                 }
             }
 
