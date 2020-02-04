@@ -1,8 +1,7 @@
 package org.kx.util;
 
-import com.alibaba.fastjson.JSON;
-
 import java.io.*;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -158,6 +157,61 @@ public class FileUtil {
     }
 
 
+//5116328
+
+    //获取最大的数字,行
+    public static String getMaxNumLine(String filePath) throws Exception {
+
+        InputStream is = new FileInputStream(filePath);
+        InputStreamReader ireader = new InputStreamReader(is, "UTF-8");
+        String line; // 用来保存每行读取的内容
+        BufferedReader reader = new BufferedReader(ireader);
+        line = reader.readLine(); // 读取第一行
+        Long max = 0L;
+        Long laji = 0L;
+        Long youyong = 294683693L;
+        Long size = 0L;
+        Long pages = 0L;
+        String  maxLineStr = null;
+        StringBuilder ss = new StringBuilder();
+        while (line != null) { // 如果 line 为空说明读完了
+            String[] blocks = line.split(",");
+            if(blocks.length ==2){
+                Long currentNum = Long.parseLong(blocks[1]);
+                if(currentNum >=1150L){
+                     laji = laji + currentNum;
+                     size ++ ;
+                     if(size %5000 ==0){
+                         writeStringToFile(ss.toString(),"/Users/xianguang/Downloads/20200203_"+pages+".txt");
+                         ss = new StringBuilder();
+                         size = 0L;
+                         pages ++ ;
+                     }
+                     ss.append(blocks[0]).append(",");
+                }
+                if(currentNum >= max){
+                    max =  currentNum ;
+                    maxLineStr =  line ;
+                }
+            }
+            line = reader.readLine(); // 读取下一行
+        }
+        reader.close();
+        is.close();
+        System.out.println(size);
+        System.out.println(laji);
+        System.out.println(youyong);
+        double f = 100*laji/youyong ;
+        DecimalFormat df = new DecimalFormat("#.00");
+        System.out.println(df.format(f)+"%");
+        writeStringToFile(ss.toString(),"/Users/xianguang/Downloads/20200203_1.txt");
+         return   maxLineStr ;
+    }
+
+
+
+
+
 
 
 
@@ -173,14 +227,12 @@ public class FileUtil {
     }
 
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
+    public static void main(String[] args) throws Exception {
 
 
-        ByteArrayInputStream byteInt=new ByteArrayInputStream(readFileInBytes("/Users/xianguang/Downloads/xinxuan_offline/0BABB79A022915327B799D4CDDD136E5"));
-        ObjectInputStream objInt=new ObjectInputStream(byteInt);
-        System.out.println(JSON.toJSONString(objInt.readObject()));
+       String sss = getMaxNumLine("/Users/xianguang/Downloads/20200203.txt");
 
-
+        System.out.println(sss);
 
     }
 
