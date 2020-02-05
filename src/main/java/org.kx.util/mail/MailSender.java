@@ -5,15 +5,15 @@ package org.kx.util.mail;
  */
 public class MailSender {
     // 邮件发送SMTP主机
-    private  String server ="smtp.163.com";//"smtp.sina.com";
+    private  String server ;//"smtp.sina.com";
     // 发件人邮箱地址
-    private  String sender ="xxx";
+    private  String sender ;
     // 发件人邮箱用户名
-    private  String username = "xxx";
+    private  String username ;
     // 发件人邮箱密码
-    private  String password ="xxx";
+    private  String password ;
     // 发件人显示昵称
-    private  String nickname ="xxx";
+    private  String nickname ;
 
     public String getServer() {
         return server;

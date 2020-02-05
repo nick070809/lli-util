@@ -7,7 +7,7 @@ public enum MailTemplate {
     commonMail("commonMail.html"),
     comfirmRegister("comfirmRegister.html"),
     noticeRegister("noticeRegister.html"),
-
+    forgotPas("forgotPas.html"),
 
     ;
     private String path;

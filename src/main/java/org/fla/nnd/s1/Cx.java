@@ -16,13 +16,15 @@ public class Cx {
     }
 
     public static String encrypt(String info){
-        return RsaCommon.encryptByPrivateKey(info);
+        String encrypt = RsaCommon.encryptByPrivateKey(info);
+        //System.out.println("密文为："+encrypt);
+        return  encrypt;
     }
 
 
     public static  void encryptAndShow(String info){
         String encryptStr = RsaCommon.encryptByPrivateKey(info);
-        //System.out.println("密文为："+encryptStr);
+        System.out.println("密文为："+encryptStr);
         System.out.println("明文为："+RsaCommon.decryptByPublicKey(encryptStr));
     }
 }

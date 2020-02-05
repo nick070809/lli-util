@@ -3,6 +3,7 @@ package org.fla.nnd.s1;
 import org.junit.Test;
 import org.kx.util.DateUtil;
 import org.kx.util.FileUtil;
+import org.kx.util.mail.MailSendUtil;
 
 import java.io.IOException;
 import java.util.Date;
@@ -44,6 +45,40 @@ public class SQ extends Cx {
 
     @Test
     public void readPath2EncryptTxt() throws IOException {
+        String path = "/Users/**.txt";
+
+        String temp[]=path.split("/");
+        String fileName=temp[temp.length-1];
+        if(fileName.contains(".")){
+            String[] sd=fileName.split("\\.");
+            if(sd.length ==2){
+                fileName =sd[0].substring(0,1) +DateUtil.getDateTimeStr(new Date(), "yyyyMMdd_HHmmss")+"."+sd[1];
+            }
+        }
+        String mingwen = FileUtil.readFile(path).trim();
+        String miwen = encrypt(mingwen);
+        FileUtil.writeStringToFile(miwen, show(encryptStr) + MIWEN + fileName);
+    }
+
+
+    @Test
+    public void readPath2EncryptMail() throws Exception {
+        String path = "/Users/**.txt";
+
+        String temp[]=path.split("/");
+        String fileName=temp[temp.length-1];
+        if(fileName.contains(".")){
+            String[] sd=fileName.split("\\.");
+            if(sd.length ==2){
+                fileName =sd[0].substring(0,1) +DateUtil.getDateTimeStr(new Date(), "yyyyMMdd_HHmmss")+"."+sd[1];
+            }
+        }
+        String mingwen = FileUtil.readFile(path).trim();
+        String miwen = encrypt(mingwen);
+        MailSendUtil.sendCommonMail(fileName,miwen);
+    }
+    @Test
+    public void readHtml2EncryptTxt() throws IOException {
         String path = "/Users/xianguang/temp/sum-business/总结-工作常用.txt";
 
         String temp[]=path.split("/");
@@ -58,6 +93,8 @@ public class SQ extends Cx {
         String miwen = encrypt(mingwen);
         FileUtil.writeStringToFile(miwen, show(encryptStr) + MIWEN + fileName);
     }
+
+
 
 
     @Test
@@ -77,4 +114,5 @@ public class SQ extends Cx {
         String info = FileUtil.readFile(path);
         System.out.println(info);
     }
+
 }

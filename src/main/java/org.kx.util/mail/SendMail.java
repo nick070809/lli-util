@@ -3,6 +3,11 @@ package org.kx.util.mail;
 /**
  * create by sunkx on 2018/1/13
  */
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import javax.mail.*;
+import javax.mail.internet.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -10,25 +15,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.activation.FileDataSource;
-import javax.mail.Address;
-import javax.mail.Authenticator;
-import javax.mail.BodyPart;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
-import javax.mail.internet.MimeUtility;
 
 public class SendMail {
     private String username = null;
@@ -56,7 +42,7 @@ public class SendMail {
     public void initMessage(){
         this.auth = new Email_Autherticator();
         Session session = Session.getDefaultInstance(pros,auth);
-        session.setDebug(true); //设置获取 debug 信息
+        session.setDebug(false); //设置获取 debug 信息
         mimeMessage = new MimeMessage(session);
     }
     /**
