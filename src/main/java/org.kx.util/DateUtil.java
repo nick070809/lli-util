@@ -85,12 +85,25 @@ public class DateUtil {
         return result;
     }
 
+    /**
+     * 获取月底
+     * @param
+     * @throws InterruptedException
+     */
+    public static Date getMonthLastDay(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        Date lastDate = calendar.getTime();
+        lastDate.setDate(calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        lastDate.setHours(calendar.getActualMaximum(Calendar.HOUR_OF_DAY));
+        lastDate.setMinutes(calendar.getActualMaximum(Calendar.MINUTE));
+        lastDate.setSeconds(calendar.getActualMaximum(Calendar.SECOND));
+        return lastDate;
+    }
 
     public static void main(String ...s) throws InterruptedException {
         Date dd= new Date();
-        Thread.sleep(700);
-        Date dd1= new Date();
-        System.out.println(getCostTime(dd1,dd));
-         System.out.println("[222".startsWith("\\["));
-    }
+
+        System.out.println(getMonthLastDay(dd));
+     }
 }

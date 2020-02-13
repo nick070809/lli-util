@@ -61,7 +61,7 @@ public class RsaCommon {
 
     }
 
-    //公钥加密
+    //公钥解密
     public static String decryptByPublicKey(String info) {
         try {
             String resultInfo = new String(RSAUtils.decryptByPublicKey(Base64.getDecoder().decode(info), getPublicKey()));

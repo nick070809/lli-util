@@ -1,5 +1,6 @@
 package org.kx.util;
 
+import javax.annotation.processing.FilerException;
 import java.io.*;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -227,12 +228,39 @@ public class FileUtil {
     }
 
 
+    /**
+     *  返回当前目录所有文件(包含子目录)
+     * @param dir
+     * @return list
+     * @throws Exception
+     */
+    public static List<File> showListFile(File dir) throws Exception{
+        List<File> list = new ArrayList<>();
+        //查找参数文件是否存在,只检查第一个入参
+        if(!dir.exists()) {
+            throw new FilerException("找不到文件");
+        }
+        //如果是目录那么进行递归调用
+        if(dir.isDirectory()) {
+            //获取目录下的所有文件
+            File[] f = dir.listFiles();
+            //进行递归调用,最后总会返回一个list
+            for (File file : f) {
+                list.addAll(showListFile(file));
+            }
+        }else {//不是目录直接添加进去
+            list.add(dir);
+        }
+        return list;
+    }
+
+
+
     public static void main(String[] args) throws Exception {
-
-
-       String sss = getMaxNumLine("/Users/xianguang/Downloads/20200203.txt");
-
-        System.out.println(sss);
+        List<File>f = showListFile(new File("/Users/xianguang/IdeaProjects/nick070809/lli-util/src/main/java/org/fla/nnd/s1"));
+        for (File file : f) {
+            System.out.println(file.getPath());
+        }
 
     }
 

@@ -45,14 +45,18 @@ public class SQ extends Cx {
 
     @Test
     public void readPath2EncryptTxt() throws IOException {
-        String path = "/Users/**.txt";
+        String path = "/Users/xianguang/IdeaProjects/0910/test_case/sp_test/sp-server/src/test/java/com/taobao/settle/sp/test/DapTest.java";
 
         String temp[]=path.split("/");
         String fileName=temp[temp.length-1];
         if(fileName.contains(".")){
             String[] sd=fileName.split("\\.");
             if(sd.length ==2){
-                fileName =sd[0].substring(0,1) +DateUtil.getDateTimeStr(new Date(), "yyyyMMdd_HHmmss")+"."+sd[1];
+                String sufix = sd[1];
+                if(sufix.equals("java")){
+                    sufix = "jx";
+                }
+                fileName =sd[0].substring(0,1) +DateUtil.getDateTimeStr(new Date(), "yyyyMMdd_HHmmss")+"."+sufix;
             }
         }
         String mingwen = FileUtil.readFile(path).trim();
@@ -79,7 +83,7 @@ public class SQ extends Cx {
     }
     @Test
     public void readHtml2EncryptTxt() throws IOException {
-        String path = "/Users/xianguang/temp/sum-business/总结-工作常用.txt";
+        String path = "/Users/xianguang/temp/sum-business/总.txt";
 
         String temp[]=path.split("/");
         String fileName=temp[temp.length-1];
