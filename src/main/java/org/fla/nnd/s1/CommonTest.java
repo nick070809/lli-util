@@ -5,6 +5,7 @@ import org.joda.time.Months;
 import org.junit.Test;
 import org.kx.util.DateUtil;
 import org.kx.util.FileUtil;
+import org.kx.util.mail.MailSendUtil;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -79,6 +80,13 @@ public class CommonTest {
     }
 
 
+    @Test
+    public  void sendMail() throws Exception {
+
+        String content = FileUtil.readFile("").trim();
+        MailSendUtil.sendCommonMail("King",content);
+
+    }
 
 
 }

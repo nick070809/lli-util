@@ -67,7 +67,7 @@ public class SQ extends Cx {
 
     @Test
     public void readPath2EncryptMail() throws Exception {
-        String path = "/Users/**.txt";
+        String path = "";
 
         String temp[]=path.split("/");
         String fileName=temp[temp.length-1];
@@ -103,7 +103,7 @@ public class SQ extends Cx {
 
     @Test
     public void read2Txt() throws IOException {
-        String fileName = "总20200204_144910.txt";
+        String fileName = "D20200213_145706.jx";
         String path = show(encryptStr) + MIWEN + fileName;
         String mingwen = FileUtil.readFile(path).trim();
         String miwen = show(mingwen);
@@ -114,9 +114,10 @@ public class SQ extends Cx {
 
     @Test
     public void showTxt() throws IOException {
-        String path = show(encryptStr) + MINGWEN + "test.txt";
-        String info = FileUtil.readFile(path);
-        System.out.println(info);
+        String fileName = "D20200213_145706.jx";
+        String path = show(encryptStr) + MIWEN + fileName;
+        String info = FileUtil.readFile(path).trim();
+        System.out.println(show(info));
     }
 
 }

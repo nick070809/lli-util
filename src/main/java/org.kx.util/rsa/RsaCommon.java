@@ -19,7 +19,7 @@ public class RsaCommon {
 
     private static JSONObject getKeys() {
         try {
-            String path = "/Users/xianguang/IdeaProjects/nick070809/lli-util/src/main/resources/mingwen/keys.txt";
+            String path = "/Users/xianguang/temp/data/keys.txt";
             String content = FileUtil.readFile(path);
             rasMap =JSONObject.parseObject(content);
             return rasMap;
