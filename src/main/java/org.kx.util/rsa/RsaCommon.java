@@ -1,7 +1,6 @@
 package org.kx.util.rsa;
 
 import com.alibaba.fastjson.JSONObject;
-import org.kx.util.FileUtil;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -15,18 +14,47 @@ import java.util.Base64;
 
 public class RsaCommon {
 
-    public static JSONObject rasMap ;
+    private static JSONObject rasMap ;
 
-    private static JSONObject getKeys() {
+    public static JSONObject getKeys() {
         try {
-            String path = "/Users/xianguang/temp/data/keys.txt";
-            String content = FileUtil.readFile(path);
-            rasMap =JSONObject.parseObject(content);
+            if(rasMap != null){
+                return  rasMap;
+            }else {
+                return getKeys("1");
+            }
+           /* String path = "";
+            File file =  new File(path);
+            if (file.exists()) {
+                String content = FileUtil.readFile(path);
+                rasMap =JSONObject.parseObject(content);
+                return rasMap;
+            }*/
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+    public static JSONObject getKeys(String key) {
+        try {
+           /* String path = "";
+            File file =  new File(path);
+            if (file.exists()) {
+                String content = FileUtil.readFile(path);
+                rasMap =JSONObject.parseObject(content);
+                return rasMap;
+            }*/
+
+            rasMap = new JSONObject();
+            rasMap.put("PrivateKey",PrivateKey.replace("XXXXMMMM",key));
             return rasMap;
         }catch (Exception e){
             throw new RuntimeException(e);
         }
     }
+
 
 
     public static PrivateKey getPrivateKey() throws Exception {
@@ -61,6 +89,9 @@ public class RsaCommon {
 
     }
 
+
+
+
     //公钥解密
     public static String decryptByPublicKey(String info) {
         try {
@@ -70,6 +101,30 @@ public class RsaCommon {
             throw new RuntimeException(x);
         }
     }
+
+
+    //====
+    //公钥加密
+    public static String encryptByPublicKey(String info) {
+        try {
+            String str = Base64.getEncoder().encodeToString(RSAUtils.encryptByPublicKey(info.getBytes(), getPublicKey()));
+            return str;
+        } catch (Exception x) {
+            throw new RuntimeException(x);
+        }
+    }
+
+    //私钥解密
+    public static String decryptByPrivateKey(String info) {
+        try {
+            String resultInfo = new String(RSAUtils.decryptByPrivateKey(Base64.getDecoder().decode(info), getPrivateKey()));
+            return resultInfo;
+        } catch (Exception x) {
+            throw new RuntimeException(x);
+        }
+
+    }
+
 
     public static void main(String[] args) {
         String info = "hello world!";

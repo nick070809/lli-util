@@ -17,17 +17,21 @@ import java.util.Date;
 public class SQ extends Cx {
     //this is a miwen txt
     static String info = "/Users/{user}/IdeaProjects/nick070809/lli-util/src/main/resources";
-    static String encryptStr = "MPT58bxQPP52bK3c8gTqH/pjEHerGBAAVZcvGaNq0TL9jfNoIlPclRNEo5cKfE1zjr1I6bvYrV7zNib176dzcnxIaOm4KptE9YJq9+h7fgsZF1nGt2O2g77JjRATG7yf28cKZ00B4ZiYcgcJOTY1qmYtZs2mVuPEx7sm82Swsoc=";
+    static String encryptStr = "XIIczXtuhF4Q5WBp+oiMge87Z1JKH6AifTVZVAU0DEoWNN1MkmWxPsemSOSYaxLy23ghrF96ZrJ0/1UPdEo3Cw8/CNeEJMOWj88y6C27m7OPDqxzjFpONNmT9HdblSXuPBJ1k0WEFLI960+PbKIF1R8eJmk4kILfiuPFyLuJ9uQ=";
     static String MINGWEN = "/mingwen/";
     static String MIWEN = "/miwen/";
 
     public static void main(String[] args) throws IOException {
-
+        getPath();
     }
 
+
+
+
+    @Deprecated
     @Test
     public void showEncryptTxt() throws IOException {
-        String path = show(encryptStr) + MIWEN + "test.txt.20200204155047";
+        String path = getPath() + MIWEN + "test.txt.20200204155047";
         String encryptStr = FileUtil.readFile(path).trim();
         System.out.println(show(encryptStr));
     }
@@ -35,17 +39,17 @@ public class SQ extends Cx {
     @Test
     public void read2EncryptTxt() throws IOException {
         String fileName = "test.txt";
-        String path = show(encryptStr) + MINGWEN + fileName;
+        String path = getPath() + MINGWEN + fileName;
         String mingwen = FileUtil.readFile(path).trim();
         String miwen = encrypt(mingwen);
         //fileName ="TDDL.txt";
         String newFileName = fileName + "." + DateUtil.getDateTimeStr(new Date(), "yyyyMMddHHmmss");
-        FileUtil.writeStringToFile(miwen, show(encryptStr) + MIWEN + newFileName);
+        FileUtil.writeStringToFile(miwen, getPath() + MIWEN + newFileName);
     }
 
     @Test
     public void readPath2EncryptTxt() throws IOException {
-        String path = "/Users/xianguang/IdeaProjects/0910/test_case/sp_test/sp-server/src/test/java/com/taobao/settle/sp/test/DapTest.java";
+        String path = "/*.java";
 
         String temp[]=path.split("/");
         String fileName=temp[temp.length-1];
@@ -61,7 +65,7 @@ public class SQ extends Cx {
         }
         String mingwen = FileUtil.readFile(path).trim();
         String miwen = encrypt(mingwen);
-        FileUtil.writeStringToFile(miwen, show(encryptStr) + MIWEN + fileName);
+        FileUtil.writeStringToFile(miwen, getPath() + MIWEN + fileName);
     }
 
 
@@ -83,7 +87,7 @@ public class SQ extends Cx {
     }
     @Test
     public void readHtml2EncryptTxt() throws IOException {
-        String path = "/Users/xianguang/temp/sum-business/总.txt";
+        String path = "/*.txt";
 
         String temp[]=path.split("/");
         String fileName=temp[temp.length-1];
@@ -95,29 +99,33 @@ public class SQ extends Cx {
         }
         String mingwen = FileUtil.readFile(path).trim();
         String miwen = encrypt(mingwen);
-        FileUtil.writeStringToFile(miwen, show(encryptStr) + MIWEN + fileName);
+        FileUtil.writeStringToFile(miwen, getPath() + MIWEN + fileName);
     }
 
 
 
 
+    @Deprecated
     @Test
     public void read2Txt() throws IOException {
         String fileName = "D20200213_145706.jx";
-        String path = show(encryptStr) + MIWEN + fileName;
+        String path =getPath() + MIWEN + fileName;
         String mingwen = FileUtil.readFile(path).trim();
         String miwen = show(mingwen);
-        FileUtil.writeStringToFile(miwen, show(encryptStr) + MINGWEN + fileName);
+        FileUtil.writeStringToFile(miwen, getPath() + MINGWEN + fileName);
     }
 
 
-
+    @Deprecated
     @Test
     public void showTxt() throws IOException {
         String fileName = "D20200213_145706.jx";
-        String path = show(encryptStr) + MIWEN + fileName;
+        String path = getPath() + MIWEN + fileName;
         String info = FileUtil.readFile(path).trim();
         System.out.println(show(info));
     }
 
+    public static String getPath()  {
+        return Cx.show2(encryptStr);
+    }
 }

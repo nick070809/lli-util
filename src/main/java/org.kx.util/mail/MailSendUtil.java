@@ -16,10 +16,10 @@ import java.util.Map;
  */
 @Slf4j
 public class MailSendUtil {
-     private  static String toName  = "OP4QP8FnUG3cFbsncYSxiZTPq7ioe1YJJNkCeBwwgYfglrgcSRldxWToOpnIketvN8YvX89oN4k7U03LMFId02facDzcBJypjo3dUH70JHHXvrkaJ2uYjrT6nuV48N8f9WT80OYZIWn78Rz87HQBgQsuer+9NnuhU/Frl6OT5z8=";
-     private  static String userName  = "cGpk4oywZGoqWlFdEPfU3NRkkXZ39ns9fhhe2tkg58qCHJfYVNCHLuqHDq0kpV/nIma/1TE3UQzQKVd9/B2yuOH64bQpJ7EgswV4BarXxeMcXkcAVo2RezKj8sA4n2EyB2fdnXTmquQQje+Zov3hxmC58sfEqI3MmUoRW2q4LP0=";
-     private  static String passWord  = "GbLgsjlEGrDj0qGxzvvydOwmLNWr1t1bH3jPEAAXPc54ZhptsGqA9kcQUHMLr8zssv3hI7uitjNoYv1lK8Aq2IXA9lNeg239WCo77v+Z6p3JFLzzzUh0EhCet4zt3Q76UHWBc3+rjogQsMG7n0XYUVhD57DJ7Ixba6uKbW9XPtY=";
 
+    private  static String toName  = "AgejvKAfSUjxT7UrHQGDA5/X3UzQ/ShMCzETN2eG8GvP+tgafRK8GcoKaO/aSylTUyW1dz8fWOFrJaFzDr6hM6gjRtmcYsjuzd0WaLnMyFzr4rB+0bGmVfviJb3miDJkiPx5KzRW/bEMrD2JkZU1dDqCYVPc7+VlKRnJi9vZA1g=";
+    private  static String userName  = "d5IdcGtQDklCyhDSNIH8bIWuDXsToODQFf8YAzviQcfEuOKStcDKp9pnDtVrEdsVBEcGW6YveIZsIWGV/vPpEGum+NbBCKnfiZmW2i1PQgQiYkr4T38YmY8KtlVrMnBd4BqnbTfguYtILTNepZMFWNihsRtjsDXHlp3ywIDteNk=";
+    private  static String passWord  = "NJl7GqWdPfYYyYv+5PwtiaoJ0oGQEbUjvfsYVKP48AqUoJiNoB/8TO7MOdJlytGXfLX0SXb63PubGF8TD6KclR7yxA7ZdalVQ+naL3GrBKruMkQ4inUfYYM8+RSOzAarj1MoFTxz5gjUJWTtX4HgbqWK+zI+Yl7iVUamMcCW9u0=";
 
     @Test
     public void testMail() throws Exception {
@@ -29,12 +29,12 @@ public class MailSendUtil {
     }
 
     public static String getUserName() throws Exception {
-        return Cx.show(userName);
+        return Cx.show2(userName);
     }
 
 
     public static String getPass() throws Exception {
-        return Cx.show(passWord);
+        return Cx.show2(passWord);
     }
 
 
@@ -48,7 +48,7 @@ public class MailSendUtil {
         mail.initMessage();
 
 
-        mail.setRecipient(Cx.show(toName));
+        mail.setRecipient(Cx.show2(toName));
         mail.setSubject(subject);
         mail.setDate(date);
         mail.setFrom("LLI-"+DateUtil.getDateTimeStr(date,"yyyyMMdd"));

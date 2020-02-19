@@ -102,7 +102,7 @@ public class RSAUtils {
 
 
     //私钥加密
-    public static  byte[]  encryptByPrivateKey(byte[] data, PrivateKey privateKey) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException, IOException {
+    public static byte[] encryptByPrivateKey(byte[] data, PrivateKey privateKey) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException, IOException {
 
 
         // 加密数据，分段加密
@@ -165,7 +165,7 @@ public class RSAUtils {
     /**
      * 公钥解密
      *
-     * @param data       解密前数据
+     * @param data      解密前数据
      * @param publicKey 公钥
      * @return 解密后数据
      * @throws Exception 解密异常
@@ -193,7 +193,6 @@ public class RSAUtils {
         out.close();
         return decryptedData;
     }
-
 
 
     public static byte[] decryptByPrivateKey(byte[] data, String privateKeyBase64Encoded) throws Exception {
@@ -265,13 +264,22 @@ public class RSAUtils {
 
 
     public static void main(String[] args) throws Exception {
-        // write your code here
 
-        // 创建密钥对
-        Map<String, Key> map = RSAUtils.genKeyPair();
 
-        PublicKey publicKey = (PublicKey) map.get(RSAUtils.PUBLIC_KEY);
-        PrivateKey privateKey =  (PrivateKey) map.get(RSAUtils.PRIVATE_KEY);
+        int x = 1;
+        PublicKey publicKey = null;
+        PrivateKey privateKey = null;
+
+        if (x > 1) {
+            // 创建密钥对
+            Map<String, Key> map = RSAUtils.genKeyPair();
+            publicKey = (PublicKey) map.get(RSAUtils.PUBLIC_KEY);
+            privateKey = (PrivateKey) map.get(RSAUtils.PRIVATE_KEY);
+        } else {
+            publicKey = RsaCommon.getPublicKey();
+            privateKey = RsaCommon.getPrivateKey();
+        }
+
 
         System.out.println("创建的密钥对：");
         System.out.println("公钥：" + Base64.getEncoder().encodeToString(publicKey.getEncoded()));
@@ -281,8 +289,8 @@ public class RSAUtils {
 
         System.out.println("原文为：" + info);
 
-       // String str = Base64.getEncoder().encodeToString(RSAUtils.encryptByPublicKey(info.getBytes(), publicKey));
-        String str = Base64.getEncoder().encodeToString(RSAUtils.encryptByPrivateKey(info.getBytes(), privateKey));
+        String str = Base64.getEncoder().encodeToString(RSAUtils.encryptByPublicKey(info.getBytes(), publicKey));
+        //String str = Base64.getEncoder().encodeToString(RSAUtils.encryptByPrivateKey(info.getBytes(), privateKey));
 
         String sign = Base64.getEncoder().encodeToString(RSAUtils.createSign(info, privateKey));
 
@@ -291,8 +299,8 @@ public class RSAUtils {
         System.out.println("签名为：" + sign);
         System.out.println(">>>>>>>>>>>");
 
-        //String resultInfo = new String(RSAUtils.decryptByPrivateKey(Base64.getDecoder().decode(str), privateKey));
-        String resultInfo = new String(RSAUtils.decryptByPublicKey(Base64.getDecoder().decode(str), publicKey));
+        String resultInfo = new String(RSAUtils.decryptByPrivateKey(Base64.getDecoder().decode(str), privateKey));
+        //String resultInfo = new String(RSAUtils.decryptByPublicKey(Base64.getDecoder().decode(str), publicKey));
 
         Boolean resultSign = RSAUtils.checkSign(info, Base64.getDecoder().decode(sign), publicKey);
 
