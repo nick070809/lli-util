@@ -5,9 +5,7 @@ import org.fla.nnd.s1.Cx;
 import org.junit.Test;
 import org.kx.util.DateUtil;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Description ：
@@ -24,7 +22,9 @@ public class MailSendUtil {
     @Test
     public void testMail() throws Exception {
         //Cx.encryptAndShow(toName);
-        sendCommonMail("测试",DateUtil.getDateTimeStr(new Date(),"yyyyMMdd HH:mm:ss"));
+        List<String> fileList = new ArrayList<>();
+        sendWithFileMail("测试",DateUtil.getDateTimeStr(new Date(),"yyyyMMdd HH:mm:ss"),fileList);
+       // sendCommonMail("测试",DateUtil.getDateTimeStr(new Date(),"yyyyMMdd HH:mm:ss"));
         Thread.sleep(10000);
     }
 
@@ -36,6 +36,33 @@ public class MailSendUtil {
     public static String getPass() throws Exception {
         return Cx.show2(passWord);
     }
+
+
+    public static void sendWithFileMail(String subject,String content,List<String> fileList)throws Exception {
+
+        Date date = new Date();
+        MailTemplate template = MailTemplate.commonMail;
+        SendMail mail = new SendMail(getUserName(), getPass()); //发件人信息
+
+        mail.setPros(getConf()); //顺序不能变
+        mail.initMessage();
+
+
+        mail.setRecipient(Cx.show2(toName));
+        mail.setSubject(subject);
+        mail.setDate(date);
+        mail.setFrom("LLI-"+DateUtil.getDateTimeStr(date,"yyyyMMdd"));
+
+
+        Map map  = new HashMap();
+        map.put("content",content);
+        String body = MailTemplateFactory.generateHtmlFromFtl(template.getPath(), map);
+
+        mail.addContent(body, "text/html; charset=UTF-8");
+        mail.addFiles(fileList);
+        mail.sendMessage();
+    }
+
 
 
 
@@ -57,7 +84,7 @@ public class MailSendUtil {
         Map map  = new HashMap();
         map.put("content",content);
         String body = MailTemplateFactory.generateHtmlFromFtl(template.getPath(), map);
-        mail.setContent(body, "text/html; charset=UTF-8");
+        mail.addContent(body, "text/html; charset=UTF-8");
         mail.sendMessage();
     }
 

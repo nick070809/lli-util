@@ -9,7 +9,6 @@ import javax.activation.FileDataSource;
 import javax.mail.*;
 import javax.mail.internet.*;
 import java.io.File;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
@@ -22,8 +21,9 @@ public class SendMail {
     private Authenticator auth = null;
     private MimeMessage mimeMessage =null;
     private Properties pros = null;
-    private Multipart multipart = null;
-    private BodyPart bodypart= null;
+    private Multipart multipart = new MimeMultipart();
+
+
     /**
      * 初始化账号密码并验证
      * 创建MimeMessage对象
@@ -163,77 +163,56 @@ public class SendMail {
     public void setFrom(String from) throws UnsupportedEncodingException, MessagingException{
         mimeMessage.setFrom(new InternetAddress(username,from));
     }
+
+
+
+
+
+    public void addContent(String msg,String type) throws MessagingException{
+        BodyPart messageBodyPart = new MimeBodyPart();
+        messageBodyPart.setContent(msg, type);
+        multipart.addBodyPart(messageBodyPart);
+    }
+
+    public void addFile(String filePath) throws MessagingException, UnsupportedEncodingException {
+        File file = new File(filePath);
+        BodyPart messageBodyPart = new MimeBodyPart();
+        DataSource source = new FileDataSource(file);
+        messageBodyPart.setDataHandler(new DataHandler(source));
+        messageBodyPart.setFileName(MimeUtility.encodeText(file.getName()));
+        multipart.addBodyPart(messageBodyPart);
+    }
+
+
+    public void addFiles(List<String> fileList) throws MessagingException, UnsupportedEncodingException {
+        for(String filePath:fileList){
+            addFile(filePath);
+        }
+        mimeMessage.setContent(multipart);
+    }
+
+
+    /**
+     * 先添加内容
+     * 添加附件
+     * 本地保存邮件信息
+     * 发送
+     * @throws MessagingException
+     */
+    public void saveMultipart() throws MessagingException {
+        mimeMessage.setContent(multipart);
+        mimeMessage.saveChanges();
+    }
+
     /**
      * 发送邮件<单人发送>
      * return 是否发送成功
      * @throws MessagingException
      */
     public String sendMessage() throws MessagingException{
+        saveMultipart();
         Transport.send(mimeMessage);
         return "success";
-    }
-    /**
-     * 设置附件
-     * @param file 发送文件的路径
-     */
-    public void setMultipart(String file) throws MessagingException, IOException{
-        if(multipart==null){
-            multipart = new MimeMultipart();
-        }
-        multipart.addBodyPart(writeFiles(file));
-        mimeMessage.setContent(multipart);
-    }
-    /**
-     * 设置附件<添加多附件>
-     * @param fileList<接收List集合>
-     * @throws MessagingException
-     * @throws IOException
-     */
-    public void setMultiparts(List<String> fileList) throws MessagingException, IOException{
-        if(multipart==null){
-            multipart = new MimeMultipart();
-        }
-        for(String s:fileList){
-            multipart.addBodyPart(writeFiles(s));
-        }
-        mimeMessage.setContent(multipart);
-    }
-    /**
-     * 发送文本内容，设置编码方式
-     * <方法与发送附件配套使用>
-     * <发送普通的文本内容请使用setText()方法>
-     * @param s
-     * @param type
-     * @throws MessagingException
-     */
-    public void setContent(String s,String type) throws MessagingException{
-        if(multipart==null){
-            multipart = new MimeMultipart();
-        }
-        bodypart = new MimeBodyPart();
-        bodypart.setContent(s, type);
-        multipart.addBodyPart(bodypart);
-        mimeMessage.setContent(multipart);
-        mimeMessage.saveChanges();
-    }
-    /**
-     * 读取附件
-     * @param filePath
-     * @return
-     * @throws IOException
-     * @throws MessagingException
-     */
-    public BodyPart writeFiles(String filePath)throws IOException, MessagingException{
-        File file = new File(filePath);
-        if(!file.exists()){
-            throw new IOException("文件不存在!请确定文件路径是否正确");
-        }
-        bodypart = new MimeBodyPart();
-        DataSource dataSource = new FileDataSource(file);
-        bodypart.setDataHandler(new DataHandler(dataSource));
-        //文件名要加入编码，不然出现乱码
-        bodypart.setFileName(MimeUtility.encodeText(file.getName()));
-        return bodypart;
     }
 
 }

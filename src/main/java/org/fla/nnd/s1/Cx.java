@@ -24,7 +24,7 @@ public class Cx {
 
     public static String show2(String encryptStr){
         String info =  RsaCommon.decryptByPrivateKey(encryptStr);
-        System.out.println("明文为："+info);
+        //System.out.println("明文为："+info);
         return  info ;
     }
 
