@@ -22,7 +22,12 @@ public class MailSendUtil {
     @Test
     public void testMail() throws Exception {
         //Cx.encryptAndShow(toName);
-        sendWithPicMail("测试",DateUtil.getDateTimeStr(new Date(),"yyyyMMdd HH:mm:ss"),"/Users/xianguang/temp/12333.png");        //sendWithFileMail("测试",DateUtil.getDateTimeStr(new Date(),"yyyyMMdd HH:mm:ss"),fileList);
+        List fileList = new ArrayList();
+        fileList.add("/Users/xianguang/temp/12333.png");
+        fileList.add("/Users/xianguang/temp/12333.png");
+
+        sendWithPicMail("测试",DateUtil.getDateTimeStr(new Date(),"yyyyMMdd HH:mm:ss"),fileList);
+        //sendWithFileMail("测试",DateUtil.getDateTimeStr(new Date(),"yyyyMMdd HH:mm:ss"),fileList);
        // sendCommonMail("测试",DateUtil.getDateTimeStr(new Date(),"yyyyMMdd HH:mm:ss"));
         Thread.sleep(10000);
     }
@@ -42,7 +47,7 @@ public class MailSendUtil {
     }
 
 
-    public static void sendWithPicMail(String subject,String content,String pic)throws Exception {
+    public static void sendWithPicMail(String subject,String content,List<String> pics)throws Exception {
 
         Date date = new Date();
         MailTemplate template = MailTemplate.commonPicMail;
@@ -63,8 +68,7 @@ public class MailSendUtil {
         String body = MailTemplateFactory.generateHtmlFromFtl(template.getPath(), map);
 
         mail.addContent(body, "text/html; charset=UTF-8");
-        mail.addPic(pic);
-        mail.addPic(pic); //发2张？
+        mail.addPics(pics);
         mail.sendMessage();
     }
 

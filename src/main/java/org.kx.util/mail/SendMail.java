@@ -208,12 +208,18 @@ public class SendMail {
         mimeMessage.setContent(multipart);
     }
 
-    public void addPic(String filePath) throws MessagingException, UnsupportedEncodingException {
+    public void addPic(String filePath) throws MessagingException{
         BodyPart imgPart = new MimeBodyPart();
         DataSource fds = new FileDataSource(filePath);
         imgPart.setDataHandler(new DataHandler(fds));
         imgPart.setHeader("Content-ID", "<image>");
         multipart.addBodyPart(imgPart);
+    }
+
+    public void addPics(List<String> fileList) throws MessagingException{
+        for (String filePath : fileList) {
+            addPic(filePath);
+        }
     }
 
     /**
