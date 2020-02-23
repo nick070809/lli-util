@@ -34,7 +34,7 @@ public class SQ extends Cx {
 
     @Test
     public void readPath2EncryptTxt() throws IOException {
-        String path = "/*.java";
+        String path = System.getProperty("user.home") +"/temp/ho/32.txt";
 
         String temp[]=path.split("/");
         String fileName=temp[temp.length-1];
@@ -56,7 +56,7 @@ public class SQ extends Cx {
 
     @Test
     public void readPath2EncryptMail() throws Exception {
-        String path = "";
+        String path = System.getProperty("user.home") +"/temp/ho/32.txt";
 
         String temp[]=path.split("/");
         String fileName=temp[temp.length-1];
