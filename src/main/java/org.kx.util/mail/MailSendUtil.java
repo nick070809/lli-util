@@ -22,8 +22,7 @@ public class MailSendUtil {
     @Test
     public void testMail() throws Exception {
         //Cx.encryptAndShow(toName);
-        List<String> fileList = new ArrayList<>();
-        sendWithFileMail("测试",DateUtil.getDateTimeStr(new Date(),"yyyyMMdd HH:mm:ss"),fileList);
+        sendWithPicMail("测试",DateUtil.getDateTimeStr(new Date(),"yyyyMMdd HH:mm:ss"),"/Users/xianguang/temp/12333.png");        //sendWithFileMail("测试",DateUtil.getDateTimeStr(new Date(),"yyyyMMdd HH:mm:ss"),fileList);
        // sendCommonMail("测试",DateUtil.getDateTimeStr(new Date(),"yyyyMMdd HH:mm:ss"));
         Thread.sleep(10000);
     }
@@ -40,6 +39,33 @@ public class MailSendUtil {
 
     public static String getPass() throws Exception {
         return Cx.show2(passWord);
+    }
+
+
+    public static void sendWithPicMail(String subject,String content,String pic)throws Exception {
+
+        Date date = new Date();
+        MailTemplate template = MailTemplate.commonPicMail;
+        SendMail mail = new SendMail(getUserName(), getPass()); //发件人信息
+
+        mail.setPros(getConf()); //顺序不能变
+        mail.initMessage();
+
+
+        mail.setRecipient(Cx.show2(toName));
+        mail.setSubject(subject);
+        mail.setDate(date);
+        mail.setFrom("LLI-"+DateUtil.getDateTimeStr(date,"yyyyMMdd"));
+
+
+        Map map  = new HashMap();
+        map.put("content",content);
+        String body = MailTemplateFactory.generateHtmlFromFtl(template.getPath(), map);
+
+        mail.addContent(body, "text/html; charset=UTF-8");
+        mail.addPic(pic);
+        mail.addPic(pic); //发2张？
+        mail.sendMessage();
     }
 
 

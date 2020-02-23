@@ -5,6 +5,7 @@ package org.kx.util.mail;
  */
 public enum MailTemplate {
     commonMail("commonMail.html"),
+    commonPicMail("commonPicMail.html"),
     comfirmRegister("comfirmRegister.html"),
     noticeRegister("noticeRegister.html"),
     forgotPas("forgotPas.html"),
