@@ -45,7 +45,7 @@ public class Cx {
 
     public static  void encryptAndShow2(String info){
         String encryptStr = RsaCommon.encryptByPublicKey(info);
-        //System.out.println("密文为："+encryptStr);
+       //System.out.println("密文为："+encryptStr);
         //System.out.println("明文为："+RsaCommon.decryptByPrivateKey(encryptStr));
     }
 }

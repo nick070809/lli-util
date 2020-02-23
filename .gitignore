@@ -29,4 +29,3 @@ src/main/java/org.kx.util/ssh
 src/test/java/com/xian/test
 src/main/resources/mingwen
 src/main/resources/miwen
-src/main/java/org/kx/util/rsa/RsaCommon.java

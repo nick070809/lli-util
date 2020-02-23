@@ -15,9 +15,9 @@ import java.util.*;
 @Slf4j
 public class MailSendUtil {
 
-    private  static String toName  = "AgejvKAfSUjxT7UrHQGDA5/X3UzQ/ShMCzETN2eG8GvP+tgafRK8GcoKaO/aSylTUyW1dz8fWOFrJaFzDr6hM6gjRtmcYsjuzd0WaLnMyFzr4rB+0bGmVfviJb3miDJkiPx5KzRW/bEMrD2JkZU1dDqCYVPc7+VlKRnJi9vZA1g=";
-    private  static String userName  = "d5IdcGtQDklCyhDSNIH8bIWuDXsToODQFf8YAzviQcfEuOKStcDKp9pnDtVrEdsVBEcGW6YveIZsIWGV/vPpEGum+NbBCKnfiZmW2i1PQgQiYkr4T38YmY8KtlVrMnBd4BqnbTfguYtILTNepZMFWNihsRtjsDXHlp3ywIDteNk=";
-    private  static String passWord  = "NJl7GqWdPfYYyYv+5PwtiaoJ0oGQEbUjvfsYVKP48AqUoJiNoB/8TO7MOdJlytGXfLX0SXb63PubGF8TD6KclR7yxA7ZdalVQ+naL3GrBKruMkQ4inUfYYM8+RSOzAarj1MoFTxz5gjUJWTtX4HgbqWK+zI+Yl7iVUamMcCW9u0=";
+    private  static String toName  = "n2pmAAUGxrUz/JrRaoK4MGHPqeJ8KKh6RYUiZG+u1qOd5TbO1pF5/Ol9aU+WJTGtpRlWD5deCAJY/TEcoCpdTCscDu0P5sr9KsmB4gp2EPpbVQJGcAOASYA8U7YagNpNvKyNaoz69tAiYlqIP8p1fERUtnNVuG9rzQEmr4XmLSs=";
+    private  static String userName  = "TpURd5GnZIgWMyf0Gi1MROyCD28XaS1knRs71y+x5i6RwWEPmNlvS4MvQ9ZctM9TQ0iJG3soPdsaI/H51Vb2R7bRG98xTHQHRWHGvHx/jv98INjxkWVB5LPoPLH3Q0kmY1IZ+KwTyljviCLPtxpILuK7f2c6vonEyv1OxyccTRk=";
+    private  static String passWord  = "OZaqbxGXGsnOfyagDlFV/+xTOxOYICoD5DeCkJPyT5oGCGk0KGeY9EYXq9lFdgPYMOJpCg2shILF/CVvclPwCz1BaB2PxJxk/gBpWO1KLR8wFROtOcbApeZQlp1+FlPHGmqD/j22KTYxg9DRxSVOnpyrq7BimAsRUgNFDEaAhOg=";
 
     @Test
     public void testMail() throws Exception {
@@ -26,6 +26,11 @@ public class MailSendUtil {
         sendWithFileMail("测试",DateUtil.getDateTimeStr(new Date(),"yyyyMMdd HH:mm:ss"),fileList);
        // sendCommonMail("测试",DateUtil.getDateTimeStr(new Date(),"yyyyMMdd HH:mm:ss"));
         Thread.sleep(10000);
+    }
+
+    @Test
+    public void testName() throws Exception {
+        Cx.encryptAndShow2("898@gmail.com");
     }
 
     public static String getUserName() throws Exception {

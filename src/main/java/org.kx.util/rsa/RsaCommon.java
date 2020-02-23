@@ -1,6 +1,7 @@
 package org.kx.util.rsa;
 
 import com.alibaba.fastjson.JSONObject;
+import org.kx.util.FileUtil;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -21,15 +22,9 @@ public class RsaCommon {
             if(rasMap != null){
                 return  rasMap;
             }else {
-                return getKeys("1");
+                String filePath = "";
+                return getKeys(filePath);
             }
-           /* String path = "";
-            File file =  new File(path);
-            if (file.exists()) {
-                String content = FileUtil.readFile(path);
-                rasMap =JSONObject.parseObject(content);
-                return rasMap;
-            }*/
         }catch (Exception e){
             throw new RuntimeException(e);
         }
@@ -37,19 +32,15 @@ public class RsaCommon {
 
 
 
-    public static JSONObject getKeys(String key) {
+    public static JSONObject getKeys(String filePath) {
         try {
-           /* String path = "";
-            File file =  new File(path);
-            if (file.exists()) {
-                String content = FileUtil.readFile(path);
+            if(rasMap != null){
+                return  rasMap;
+            }else {
+                String content = FileUtil.readFile(filePath);
                 rasMap =JSONObject.parseObject(content);
                 return rasMap;
-            }*/
-
-            rasMap = new JSONObject();
-            rasMap.put("PrivateKey",PrivateKey.replace("XXXXMMMM",key));
-            return rasMap;
+            }
         }catch (Exception e){
             throw new RuntimeException(e);
         }

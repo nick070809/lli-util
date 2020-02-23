@@ -16,36 +16,21 @@ import java.util.Date;
 
 public class SQ extends Cx {
     //this is a miwen txt
-    static String info = "/Users/{user}/IdeaProjects/nick070809/lli-util/src/main/resources";
-    static String encryptStr = "XIIczXtuhF4Q5WBp+oiMge87Z1JKH6AifTVZVAU0DEoWNN1MkmWxPsemSOSYaxLy23ghrF96ZrJ0/1UPdEo3Cw8/CNeEJMOWj88y6C27m7OPDqxzjFpONNmT9HdblSXuPBJ1k0WEFLI960+PbKIF1R8eJmk4kILfiuPFyLuJ9uQ=";
+    static String encryptStr = "SF5VX8hJLn/T1LsdcM9MOI7u/nsyxJkuUq7qAS1izGWvSu+CdJIOxOpK5Fxtyt/TICY6FbE3LGNcgepuaqgKIcg7vi85kP/ZKVK34NCuZy9fT9lVz3JYiX5crumamiqQKZjtqs9L75WTsZH+zdkVq9zRJYG9mvNX5zAGy/cOLjA=";
     static String MINGWEN = "/mingwen/";
     static String MIWEN = "/miwen/";
 
     public static void main(String[] args) throws IOException {
-        getPath();
+        System.out.println(getPath());
     }
 
 
+    public static String getPath()  {
+        return   Cx.show2(encryptStr);
 
-
-    @Deprecated
-    @Test
-    public void showEncryptTxt() throws IOException {
-        String path = getPath() + MIWEN + "test.txt.20200204155047";
-        String encryptStr = FileUtil.readFile(path).trim();
-        System.out.println(show(encryptStr));
     }
 
-    @Test
-    public void read2EncryptTxt() throws IOException {
-        String fileName = "test.txt";
-        String path = getPath() + MINGWEN + fileName;
-        String mingwen = FileUtil.readFile(path).trim();
-        String miwen = encrypt(mingwen);
-        //fileName ="TDDL.txt";
-        String newFileName = fileName + "." + DateUtil.getDateTimeStr(new Date(), "yyyyMMddHHmmss");
-        FileUtil.writeStringToFile(miwen, getPath() + MIWEN + newFileName);
-    }
+
 
     @Test
     public void readPath2EncryptTxt() throws IOException {
@@ -104,28 +89,4 @@ public class SQ extends Cx {
 
 
 
-
-    @Deprecated
-    @Test
-    public void read2Txt() throws IOException {
-        String fileName = "D20200213_145706.jx";
-        String path =getPath() + MIWEN + fileName;
-        String mingwen = FileUtil.readFile(path).trim();
-        String miwen = show(mingwen);
-        FileUtil.writeStringToFile(miwen, getPath() + MINGWEN + fileName);
-    }
-
-
-    @Deprecated
-    @Test
-    public void showTxt() throws IOException {
-        String fileName = "D20200213_145706.jx";
-        String path = getPath() + MIWEN + fileName;
-        String info = FileUtil.readFile(path).trim();
-        System.out.println(show(info));
-    }
-
-    public static String getPath()  {
-        return Cx.show2(encryptStr);
-    }
 }
