@@ -47,6 +47,23 @@
                     <treatWarningsAsErrors>true</treatWarningsAsErrors>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.0.0</version>
+                <!-- 绑定source插件到Maven的生命周期,并在生命周期后执行绑定的source的goal -->
+                <executions>
+                    <execution>
+                        <!-- 绑定source插件到Maven的生命周期 -->
+                        <phase>compile</phase>
+                        <!--在生命周期后执行绑定的source插件的goals -->
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -229,5 +246,14 @@
         </dependency>
 
     </dependencies>
+
+    <distributionManagement>
+
+          <repository>
+            <id>snapshots</id>
+                <url>http://mvnrepo.alibaba-inc.com/mvn/snapshots</url>
+          </repository>
+        </distributionManagement>
+
 </project>
 

@@ -184,6 +184,42 @@ public class WriteJarVersion {
 
 
 
+    public static String  getDiffContentHtml(Map<String,String > map1 , Map<String,String > map2 ) throws Exception {
+
+
+
+        StringBuilder b = new StringBuilder() ;
+        StringBuilder a = new StringBuilder("result : <br/>") ;
+        StringBuilder c = new StringBuilder() ;
+
+        for (Map.Entry<String,String> entry : map1.entrySet()) {
+
+            String jarName = entry.getKey() ;
+            String jarVersion = entry.getValue() ;
+            String jarOldVersion = map2.get(jarName);
+            if(jarOldVersion == null){
+                b.append("新增 jar   " +jarName +".jar: " + jarVersion).append(" <br/>");
+            }else if(jarVersion.equals(jarOldVersion)){
+            }else{
+                a.append("版本变化   "+jarName +".jar : " +jarOldVersion +" -> " + jarVersion).append(" <br/>");
+            }
+        }
+        for (Map.Entry<String,String> entry : map2.entrySet()) {
+            String jarName = entry.getKey() ;
+            String jarVersion = entry.getValue() ;
+            String jarNewVersion = map1.get(jarName);
+            if(jarNewVersion == null){
+                c.append("减少 jar   " +jarName+".jar: " + jarVersion).append(" <br/>");
+            }
+        }
+
+        a.append(b).append(c);
+        return a.toString();
+
+    }
+
+
+
 
 
 }

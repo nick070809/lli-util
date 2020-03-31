@@ -14,22 +14,23 @@ import java.util.regex.Pattern;
  * Description ： Created by  xianguang.skx Since 2019/7/28
  */
 
-public class LogSearchParse {
+public class LogSearch {
     public static void main(String[] args) throws Exception{
         readDiff(MyCnfig.LOG_FILE);
     }
 
 
-    public   static String readDiff(String filePath) throws Exception {
+    private   static void readDiff(String filePath) throws Exception {
 
         InputStream is = new FileInputStream(filePath);
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        StringBuilder sbt  = new StringBuilder();
+
         String ipline = null;
         int ii =0,temp = 0;
         for(String line = reader.readLine(); line != null; line = reader.readLine()) {
 
             line = line.trim() ;
+
             if(StringUtils.isBlank(line) ){
                 continue;
             }
@@ -45,21 +46,20 @@ public class LogSearchParse {
                 continue;
             }
             if(temp != ii){
-                sbt.append("$").append(getIp(ipline));
+                System.out.println("");
+                System.out.println(getIp(ipline));
                 ii =temp ;
             }
-            sbt.append("$").append(line);
+            System.out.println(line);
+
+
+
         }
 
 
         reader.close();
         is.close();
-        return  sbt.toString();
     }
-
-
-
-
 
 
     public  static boolean isNumeric(String str){
@@ -122,15 +122,16 @@ public class LogSearchParse {
         //System.out.println( s);
         StringBuilder sbt  = new StringBuilder() ;
         sbt.append(dealSegmentStr(s.substring(0,3))).append(".").
-            append(dealSegmentStr(s.substring(3,6))).append(".").
-            append(dealSegmentStr(s.substring(6,9))).append(".").
-            append(dealSegmentStr(s.substring(9,12)));
+                append(dealSegmentStr(s.substring(3,6))).append(".").
+                append(dealSegmentStr(s.substring(6,9))).append(".").
+                append(dealSegmentStr(s.substring(9,12)));
         return sbt.toString();
     }
 
     private static String dealSegmentStr(String s){
         String temp = s.toString() ;
-         while (temp.startsWith("0")){
+        // System.out.println(s);
+        while (temp.startsWith("0")){
             temp = temp.substring(1,temp.length());
         }
         return temp;
