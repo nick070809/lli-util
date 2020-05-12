@@ -255,13 +255,33 @@ public class FileUtil {
     }
 
 
+    /**
+     * 是否为文本
+     * @return
+     */
+    public static boolean   isTxt(String fileSuffix){
+
+        List<String> strs = Arrays.asList("txt", "json", "md", "sql");
+
+        return strs.stream().filter(str -> str.equalsIgnoreCase(fileSuffix)).findAny().isPresent();
+    }
+
+    /**
+     * 是否为图片
+     * @return
+     */
+    public static boolean   isPic(String fileSuffix){
+
+        List<String> strs = Arrays.asList("jpg", "eddx", "gif", "jpeg");
+
+        return strs.stream().filter(str -> str.equalsIgnoreCase(fileSuffix)).findAny().isPresent();
+    }
+
+
 
     public static void main(String[] args) throws Exception {
-        List<File>f = showListFile(new File("/Users/xianguang/IdeaProjects/nick070809/lli-util/src/main/java/org/fla/nnd/s1"));
-        for (File file : f) {
-            System.out.println(file.getPath());
-        }
-
+        System.out.println( isTxt("txt"));
+        System.out.println(  isPic("txt"));
     }
 
 }

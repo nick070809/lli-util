@@ -13,8 +13,8 @@ import java.io.*;
 
 public class Base64ImageUtil {
     public static void main(String[] args) throws Exception {
-        String path ="/Users/xianguang/Desktop/rBEBp1uPSjGAcorHAAHSy0lm8bQ216.jpg";
-        String target ="/Users/xianguang/Desktop/214.jpg";
+        String path ="/Users/xianguang/temp/结算.eddx";
+        String target ="/Users/xianguang/Desktop/215.eddx";
 
         String strImg = GetImageStr(path);
         System.out.println("strImg===" + strImg);
