@@ -272,7 +272,7 @@ public class FileUtil {
      */
     public static boolean   isPic(String fileSuffix){
 
-        List<String> strs = Arrays.asList("jpg", "eddx", "gif", "jpeg");
+        List<String> strs = Arrays.asList("jpg", "eddx", "gif", "jpeg", "pdf");
 
         return strs.stream().filter(str -> str.equalsIgnoreCase(fileSuffix)).findAny().isPresent();
     }
