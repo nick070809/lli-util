@@ -52,7 +52,7 @@ public class MailSendUtil {
 
     @Test
     public void testreadBase64() throws Exception {
-        sendBase64("/Users/xianguang/temp/绘图3.txt");
+        readBase64("/Users/xianguang/temp/绘图3.txt");
     }
 
 
@@ -89,7 +89,7 @@ public class MailSendUtil {
 
         String fileName = Cx.show(fileNameAndContent[0]);
         String content = Cx.show(fileNameAndContent[1]);
-        String suffix = exstr.substring(exstr.lastIndexOf(".") + 1, exstr.length());
+        String suffix = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
         String targetPath = dirPath + fileName;
         if (FileUtil.isPic(suffix)) {
             Base64ImageUtil.GenerateImage(content, targetPath);
