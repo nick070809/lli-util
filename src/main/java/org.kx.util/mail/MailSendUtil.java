@@ -47,7 +47,7 @@ public class MailSendUtil {
 
     @Test
     public void testsendBase64() throws Exception {
-        sendBase64("/Users/xianguang/temp/绘图3.eddx");
+        sendBase64("/Users/xianguang/temp/绘图3.txt");
     }
 
     @Test
@@ -70,7 +70,7 @@ public class MailSendUtil {
             content =  Cx.encrypt(FileUtil.readFile(filePath));
         }
         String exstr =Cx.encrypt(fileName) +"SSSSSDDDDD"+ content;
-        String targetPath = dirPath + DateUtil.getDateTimeStr(new Date(), "yyyyMMddHHmmss") + ".txt";
+        String targetPath = "/Users/xianguang/temp/" + DateUtil.getDateTimeStr(new Date(), "yyyyMMddHHmmss") + ".txt";
         FileUtil.writeStringToFile(exstr, targetPath);
         List fileList = new ArrayList();
         fileList.add(targetPath);
