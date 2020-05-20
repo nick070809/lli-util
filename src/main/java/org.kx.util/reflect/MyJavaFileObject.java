@@ -16,7 +16,7 @@ public class MyJavaFileObject extends SimpleJavaFileObject {
 
     private String source;
     private ByteArrayOutputStream outPutStream;
-
+    private String qualifiedClassName;
 
     public MyJavaFileObject(String name, String source) {
         super(URI.create("String:///" + name + Kind.SOURCE.extension), Kind.SOURCE);
@@ -26,6 +26,7 @@ public class MyJavaFileObject extends SimpleJavaFileObject {
     public MyJavaFileObject(String name, Kind kind) {
         super(URI.create("String:///" + name + kind.extension), kind);
         source = null;
+        this.qualifiedClassName = name;
     }
 
     @Override
@@ -46,4 +47,7 @@ public class MyJavaFileObject extends SimpleJavaFileObject {
         return outPutStream.toByteArray();
     }
 
+    public String getQualifiedClassName() {
+        return qualifiedClassName;
+    }
 }

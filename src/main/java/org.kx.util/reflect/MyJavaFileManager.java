@@ -15,9 +15,9 @@ import java.util.Map;
 
 public class MyJavaFileManager  extends ForwardingJavaFileManager<JavaFileManager> {
 
-    private Map<String, JavaFileObject> fileObjects;
+    private Map<String, MyJavaFileObject> fileObjects;
 
-    public MyJavaFileManager(JavaFileManager fileManager, Map<String, JavaFileObject> fileObjects) {
+    public MyJavaFileManager(JavaFileManager fileManager, Map<String, MyJavaFileObject> fileObjects) {
         super(fileManager);
         this.fileObjects = fileObjects;
     }
@@ -33,8 +33,15 @@ public class MyJavaFileManager  extends ForwardingJavaFileManager<JavaFileManage
 
     @Override
     public JavaFileObject getJavaFileForOutput(JavaFileManager.Location location, String qualifiedClassName, JavaFileObject.Kind kind, FileObject sibling) throws IOException {
-        JavaFileObject javaFileObject = new MyJavaFileObject(qualifiedClassName, kind);
-        fileObjects.put(qualifiedClassName, javaFileObject);
+        String  className = null;
+        if(qualifiedClassName.contains(".")){
+            className = qualifiedClassName.substring(qualifiedClassName.lastIndexOf(".")+1);
+        }else {
+            className = qualifiedClassName ;
+        }
+
+        MyJavaFileObject javaFileObject = new MyJavaFileObject(qualifiedClassName, kind);
+        fileObjects.put(className, javaFileObject);
         return javaFileObject;
     }
 }

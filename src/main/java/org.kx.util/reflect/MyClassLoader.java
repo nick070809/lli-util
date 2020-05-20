@@ -1,6 +1,5 @@
 package org.kx.util.reflect;
 
-import javax.tools.JavaFileObject;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -12,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class MyClassLoader extends ClassLoader {
     MyClassLoader myClassLoader = null;
-    private  Map<String, JavaFileObject> fileObjects = new ConcurrentHashMap<>();
+    private Map<String, MyJavaFileObject> fileObjects = new ConcurrentHashMap<>();
 
 
     private static class MyClassLoadersInstance {
@@ -26,16 +25,16 @@ public class MyClassLoader extends ClassLoader {
         return MyClassLoadersInstance.instance;
     }
 
-    public Map<String, JavaFileObject> getFileObjects() {
+    public Map<String, MyJavaFileObject> getFileObjects() {
         return fileObjects;
     }
 
     @Override
     protected Class<?> findClass(String name) throws ClassNotFoundException {
-        JavaFileObject fileObject = fileObjects.get(name);
+        MyJavaFileObject fileObject = fileObjects.get(name);
         if (fileObject != null) {
-            byte[] bytes = ((MyJavaFileObject) fileObject).getCompiledBytes();
-            return defineClass(name, bytes, 0, bytes.length);
+            byte[] bytes = fileObject.getCompiledBytes();
+            return defineClass(fileObject.getQualifiedClassName(), bytes, 0, bytes.length);
         }
         try {
             return ClassLoader.getSystemClassLoader().loadClass(name);

@@ -22,7 +22,7 @@ public class MyObjectMaker<T> {
     public T makeObject(String source) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
 
         ClassLoader classloader = MyClassLoader.getInstance();
-        Map<String, JavaFileObject> fileObjects = ((MyClassLoader) classloader).getFileObjects();
+        Map<String, MyJavaFileObject> fileObjects = ((MyClassLoader) classloader).getFileObjects();
 
 
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
