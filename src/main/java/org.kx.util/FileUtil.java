@@ -350,7 +350,7 @@ public class FileUtil {
                 sbt.append(_fileName).append("\n").append(content).append(br);
             }
         }
-        writeStringToFile(sbt.toString(), "/Users/xianguang/IdeaProjects/OLL/" + DateUtil.getDateTimeStr(new Date(), "yyyyMMddHHmmss") + "_" + Cx.encrypt(dirname) + ".txt");
+        writeStringToFile(sbt.toString(), "/Users/xianguang/IdeaProjects/OLL/" + DateUtil.getDateTimeStr(new Date(), "yyyyMMddHHmmss") + ".rm");
     }
 
 
