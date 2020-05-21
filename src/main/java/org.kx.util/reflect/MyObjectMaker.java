@@ -21,8 +21,9 @@ public class MyObjectMaker<T> {
 
     public T makeObject(String source) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
 
-        ClassLoader classloader = MyClassLoader.getInstance();
-        Map<String, MyJavaFileObject> fileObjects = ((MyClassLoader) classloader).getFileObjects();
+        //ClassLoader classloader = MyClassLoader.getInstance();
+        ClassLoader classloader = new MutiClassLoader();
+        Map<String, MyJavaFileObject> fileObjects = ((MutiClassLoader) classloader).getFileObjects();
 
 
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
