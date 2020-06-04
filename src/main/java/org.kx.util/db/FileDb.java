@@ -1,4 +1,4 @@
-package org.kx.util.cache;
+package org.kx.util.db;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -53,6 +53,14 @@ public class FileDb {
     }
 
 
+    public JSONObject readAll(String fileName ) throws IOException {
+
+        String filepath = System.getProperty("user.home") + File.separator + "filedb" + File.separator + fileName;
+        File file = new File(filepath);
+        return read2Json(file,true);
+    }
+
+
     public int remove(String fileName, String key) throws IOException {
 
         String filepath = System.getProperty("user.home") + File.separator + "filedb" + File.separator + fileName;
@@ -91,6 +99,9 @@ public class FileDb {
     }
 
     private String readFile(File file) throws IOException {
+        if (!file.exists()) {
+            return  null;
+        }
         String content = FileUtil.readFile(file.getAbsolutePath());
         return content;
     }
@@ -154,7 +165,7 @@ public class FileDb {
         //  System.out.println(System.getProperty("user.home"));
         // System.out.println(System.getProperty("user.dir"));
 
-         FileDb.getInstance().insert("test","32","this is a ois doc.");
+       //  FileDb.getInstance().insert("test","32","this is a ois doc.");
        // FileDb.getInstance().remove("test", "32");
         System.out.println(FileDb.getInstance().read("test", "32"));
 

@@ -4,7 +4,7 @@
  * Since 2020/5/25
  */
 
-package org.kx.util.cache;
+package org.kx.util.db;
 
 /*
     文件型存储
