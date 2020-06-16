@@ -290,8 +290,8 @@ public class FileUtil {
 
 
     public static void readAll(String filepath) throws Exception {
-        String dirPath = filepath.substring(0,filepath.lastIndexOf(File.separator));
-        String dirName ="PZ";
+        String dirPath = filepath.substring(0, filepath.lastIndexOf(File.separator));
+        String dirName = "PZ";
         String currentFileName = null;
         InputStream is = new FileInputStream(filepath);
         InputStreamReader ireader = new InputStreamReader(is, "UTF-8");
@@ -299,30 +299,27 @@ public class FileUtil {
         BufferedReader reader = new BufferedReader(ireader);
         line = reader.readLine(); // 读取第一行
         while (line != null) { // 如果 line 为空说明读完了
-            if(StringUtils.isNotBlank(line)){
-                if(line.startsWith("PZ")){
-                    dirName =   Cx.show(line.substring(2));
-                    File dirPathNew = new File(dirPath +File.separator + dirName);
-                    dirPath = dirPathNew.getAbsolutePath() ;
+            if (StringUtils.isNotBlank(line)) {
+                if (line.startsWith("PZ")) {
+                    dirName = Cx.show(line.substring(2));
+                    File dirPathNew = new File(dirPath + File.separator + dirName);
+                    dirPath = dirPathNew.getAbsolutePath();
                     //创建目录
                     if (!dirPathNew.exists()) {
                         dirPathNew.getParentFile().mkdirs();
 
                     }
-                }else
-                if(line.startsWith("CZ")){
-                    String content =   Cx.show(line.substring(2));
+                } else if (line.startsWith("CZ")) {
+                    String content = Cx.show(line.substring(2));
                     if (isTxt(getSuffix(currentFileName))) {
-                        writeStringToFile(content, dirPath+ File.separator+ currentFileName);
+                        writeStringToFile(content, dirPath + File.separator + currentFileName);
 
                     } else if (isPic(getSuffix(currentFileName))) {
 
-                        Base64ImageUtil.GenerateImage(content, dirPath+ File.separator+ currentFileName);
+                        Base64ImageUtil.GenerateImage(content, dirPath + File.separator + currentFileName);
                     }
-                }
-                else
-                if(line.startsWith("FZ")){
-                    currentFileName =   Cx.show(line.substring(2));
+                } else if (line.startsWith("FZ")) {
+                    currentFileName = Cx.show(line.substring(2));
                 }
             }
         }
@@ -334,11 +331,11 @@ public class FileUtil {
 
     public static void writeAll(String dirpath) throws Exception {
         File dir = new File(dirpath);
-        String dirPath_ = dirpath.replace(File.separator,"_");
+        String dirPath_ = dirpath.replace(File.separator, "_");
         String dirname = dir.getName();
-        List<File> files = filterHidden(dirpath ,showListFile(dir));
+        List<File> files = filterHidden(dirpath, showListFile(dir));
         String br = "\n\n";
-        StringBuilder sbt = new StringBuilder("PZ"+Cx.encrypt(dirPath_)).append(br);
+        StringBuilder sbt = new StringBuilder("PZ" + Cx.encrypt(dirPath_)).append(br);
         for (File file : files) {
             String _fileName = "FZ" + Cx.encrypt(file.getName());
             //String _fileName = file.getAbsolutePath();
@@ -354,20 +351,85 @@ public class FileUtil {
     }
 
 
-    public static boolean filterHidden(String dirpath,File file) {
+    public static boolean filterHidden(String dirpath, File file) {
         String fileName = file.getAbsolutePath().substring(dirpath.length());
         return !fileName.startsWith(".");
 
     }
 
-    public static List<File> filterHidden(String dirpath,List<File> files) {
-        return files.stream().filter(e ->  filterHidden(dirpath,e)).collect(Collectors.toList());
+    public static List<File> filterHidden(String dirpath, List<File> files) {
+        return files.stream().filter(e -> filterHidden(dirpath, e)).collect(Collectors.toList());
     }
 
 
-    public static void main(String[] args) throws Exception {
-         writeAll("/Users/xianguang/temp/绘图3.txt");
+    //判断编码格式方法
+    public static String getFilecharset(File sourceFile) {
+        String charset = "GBK";
+        byte[] first3Bytes = new byte[3];
+        try {
+            boolean checked = false;
+            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(sourceFile));
+            bis.mark(0);
+            int read = bis.read(first3Bytes, 0, 3);
+            if (read == -1) {
+                return charset; //文件编码为 ANSI
+            } else if (first3Bytes[0] == (byte) 0xFF
+                    && first3Bytes[1] == (byte) 0xFE) {
+                charset = "UTF-16LE"; //文件编码为 Unicode
+                checked = true;
+            } else if (first3Bytes[0] == (byte) 0xFE
+                    && first3Bytes[1] == (byte) 0xFF) {
+                charset = "UTF-16BE"; //文件编码为 Unicode big endian
+                checked = true;
+            } else if (first3Bytes[0] == (byte) 0xEF
+                    && first3Bytes[1] == (byte) 0xBB
+                    && first3Bytes[2] == (byte) 0xBF) {
+                charset = "UTF-8"; //文件编码为 UTF-8
+                checked = true;
+            }
+            bis.reset();
+            if (!checked) {
+                int loc = 0;
+                while ((read = bis.read()) != -1) {
+                    loc++;
+                    if (read >= 0xF0)
+                        break;
+                    if (0x80 <= read && read <= 0xBF) // 单独出现BF以下的，也算是GBK
+                        break;
+                    if (0xC0 <= read && read <= 0xDF) {
+                        read = bis.read();
+                        if (0x80 <= read && read <= 0xBF) // 双字节 (0xC0 - 0xDF)
+                            // (0x80
+                            // - 0xBF),也可能在GB编码内
+                            continue;
+                        else
+                            break;
+                    } else if (0xE0 <= read && read <= 0xEF) {// 也有可能出错，但是几率较小
+                        read = bis.read();
+                        if (0x80 <= read && read <= 0xBF) {
+                            read = bis.read();
+                            if (0x80 <= read && read <= 0xBF) {
+                                charset = "UTF-8";
+                                break;
+                            } else
+                                break;
+                        } else
+                            break;
+                    }
+                }
+            }
+            bis.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return charset;
+    }
 
+    public static void main(String[] args) throws Exception {
+        //writeAll("/Users/xianguang/temp/绘图3.txt");
+        String filePath = " ";
+
+        System.out.println(getFilecharset(new File(filePath)));
 
     }
 

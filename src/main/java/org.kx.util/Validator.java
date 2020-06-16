@@ -114,12 +114,12 @@ public class Validator {
                 }
             }else if(dsl.startsWith(NOTCONTAINSFULLANGLE)){
                 if(value != null) {
-                    if(!notContainsFullAngle(valueStr))err.append(property +"含有全角字符,");
+                    if(!containsFullAngle(valueStr))err.append(property +"含有全角字符,");
                 }
             }
             else if(dsl.startsWith(NOTCONTAINSCHINESE)){
                 if(value != null) {
-                    if(!notContainsChinese(valueStr))err.append(property +"含有中文字符,");
+                    if(containsChinese(valueStr))err.append(property +"含有中文字符,");
                 }
             }
         }
@@ -128,6 +128,19 @@ public class Validator {
     public static boolean isNum(String str){
         return str.matches("[0-9]+");
     }
+
+    // 判断一个字符串是否含有数字
+    public static boolean hasDigit(String content) {
+        boolean flag = false;
+        Pattern p = Pattern.compile(".*\\d+.*");
+        Matcher m = p.matcher(content);
+        if (m.matches()) {
+            flag = true;
+        }
+        return flag;
+    }
+
+
     /**校验全为字母**/
     public static boolean isChars(String str){
         return str.matches("[a-zA-Z]+");
@@ -151,32 +164,180 @@ public class Validator {
     /**
      * 含有中文
      */
-    public static Boolean notContainsChinese(String str) {
+    public static Boolean containsChinese(String str) {
         String regex = "[\u4e00-\u9fa5]";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(str);
-        boolean flag = false;
         if (matcher.find()) {
-            return  false;
+            return  true;
         }
-        return true;
+        return false;
     }
     /**
      * 不含有含有全角字符
      */
-    public static Boolean notContainsFullAngle(String str) {
+    public static Boolean containsFullAngle(String str) {
         str = str.replaceAll("[\u4e00-\u9fa5]", "");
         char[] chars_test1 = str.toCharArray();
         for (int i = 0; i < chars_test1.length; i++) {
             String temp = String.valueOf(chars_test1[i]);
             // 判断是全角字符
             if (temp.matches("[^\\x00-\\xff]")) {
-                return  false;
+                return  true;
                 //throw new BaseException(ErrorCodeConstants.WrongDataSpecified,"含有全角字符","");
             }
         }
-        return  true;
+        return  false;
     }
+
+    /**
+     * 是否包含中文字符<br>
+     * 包含中文标点符号<br>
+     *
+     * @param str
+     * @return
+     */
+    public static boolean hasChinese(String str) {
+        if (str == null) {
+            return false;
+        }
+        char[] ch = str.toCharArray();
+        for (char c : ch) {
+            if (isChinese(c)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * 是否全是中文字符<br>
+     * 包含中文标点符号<br>
+     *
+     * @param str
+     * @return
+     */
+    public static boolean isChinese(String str) {
+        if (str == null) {
+            return false;
+        }
+        char[] ch = str.toCharArray();
+        for (char c : ch) {
+            if (!isChinese(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 是否是中文字符<br>
+     * 包含中文标点符号<br>
+     *
+     * @param c
+     * @return
+     */
+    private static boolean isChinese(char c) {
+        Character.UnicodeBlock ub = Character.UnicodeBlock.of(c);
+        if (ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS) {
+            return true;
+        } else if (ub == Character.UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS) {
+            return true;
+        } else if (ub == Character.UnicodeBlock.CJK_SYMBOLS_AND_PUNCTUATION) {
+            return true;
+        } else if (ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_A) {
+            return true;
+        } else if (ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_B) {
+            return true;
+        } else if (ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_C) {
+            return true;
+        } else if (ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_D) {
+            return true;
+        } else if (ub == Character.UnicodeBlock.GENERAL_PUNCTUATION) {
+            return true;
+        } else if (ub == Character.UnicodeBlock.HALFWIDTH_AND_FULLWIDTH_FORMS) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 是否包含汉字<br>
+     * 根据汉字编码范围进行判断<br>
+     * CJK统一汉字（不包含中文的，。《》（）“‘'”、！￥等符号）<br>
+     *
+     * @param str
+     * @return
+     */
+    public static boolean hasChineseByReg(String str) {
+        if (str == null) {
+            return false;
+        }
+        Pattern pattern = Pattern.compile("[\\u4E00-\\u9FBF]+");
+        return pattern.matcher(str).find();
+    }
+
+    /**
+     * 是否全是汉字<br>
+     * 根据汉字编码范围进行判断<br>
+     * CJK统一汉字（不包含中文的，。《》（）“‘'”、！￥等符号）<br>
+     *
+     * @param str
+     * @return
+     */
+    public static boolean isChineseByReg(String str) {
+        if (str == null) {
+            return false;
+        }
+        Pattern pattern = Pattern.compile("[\\u4E00-\\u9FBF]+");
+        return pattern.matcher(str).matches();
+    }
+
+    /**
+     * 是否包含汉字<br>
+     * 根据汉字编码范围进行判断<br>
+     * CJK统一汉字（不包含中文的，。《》（）“‘'”、！￥等符号）<br>
+     *
+     * @param str
+     * @return
+     */
+    public static boolean hasChineseByRange(String str) {
+        if (str == null) {
+            return false;
+        }
+        char[] ch = str.toCharArray();
+        for (char c : ch) {
+            if (c >= 0x4E00 && c <= 0x9FBF) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 是否全是汉字<br>
+     * 根据汉字编码范围进行判断<br>
+     * CJK统一汉字（不包含中文的，。《》（）“‘'”、！￥等符号）<br>
+     *
+     * @param str
+     * @return
+     */
+    public static boolean isChineseByRange(String str) {
+        if (str == null) {
+            return false;
+        }
+        char[] ch = str.toCharArray();
+        for (char c : ch) {
+            if (c < 0x4E00 || c > 0x9FBF) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+
 
     private static Object invokeGetMethod(Object bean, Method method){
         Object result = null;

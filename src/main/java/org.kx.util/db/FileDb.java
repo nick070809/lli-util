@@ -9,6 +9,9 @@ import org.kx.util.FileUtil;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Description ：
@@ -34,12 +37,41 @@ public class FileDb {
 
     public int insert(String fileName, String key, String value) throws IOException {
 
+        return insert(fileName, key, value, true);
+    }
+
+    public int insert(String fileName, String key, String value, boolean persistence) throws IOException {
+
         String filepath = System.getProperty("user.home") + File.separator + "filedb" + File.separator + fileName;
         File file = new File(filepath);
         createIfNotexsist(file);
-        write(file, key, value, true);
-        backup(fileName, key, value, "insert");
+        write(file, key, value, persistence);
+        //backup(fileName, key, value, "insert");
         return 1;
+    }
+
+
+    public int batchInsert(String fileName, HashMap<String, String> kv) throws IOException {
+
+        String filepath = System.getProperty("user.home") + File.separator + "filedb" + File.separator + fileName;
+        File file = new File(filepath);
+        createIfNotexsist(file);
+
+        Iterator<Map.Entry<String, String>> entries = kv.entrySet().iterator();
+        int size = 0;
+        while (entries.hasNext()) {
+            Map.Entry<String, String> entry = entries.next();
+            write(file, entry.getKey(), entry.getValue(), false);
+            size++;
+        }
+
+        JSONObject jsonObject = read2Json(file, false);
+
+        FileUtil.writeStringToFile(JSON.toJSONString(jsonObject), file.getAbsolutePath());
+
+
+        backup(fileName, "k", "v", "bacthc insert");
+        return size;
     }
 
 
@@ -47,17 +79,17 @@ public class FileDb {
 
         String filepath = System.getProperty("user.home") + File.separator + "filedb" + File.separator + fileName;
         File file = new File(filepath);
-        JSONObject fileContent = read2Json(file,true);
+        JSONObject fileContent = read2Json(file, true);
         String value = read(fileContent, key);
         return value;
     }
 
 
-    public JSONObject readAll(String fileName ) throws IOException {
+    public JSONObject readAll(String fileName) throws IOException {
 
         String filepath = System.getProperty("user.home") + File.separator + "filedb" + File.separator + fileName;
         File file = new File(filepath);
-        return read2Json(file,true);
+        return read2Json(file, true);
     }
 
 
@@ -76,12 +108,12 @@ public class FileDb {
         //2、可以同步到其他机器
         //3、可以发个 msg
 
-        System.out.println(DateUtil.getDateTimeStr(new Date(), "yyyy-MM-dd HH:mm:ss SSS") + "|" + action + "|" +fileName+"|"+ key + "|" + value  );
+        System.out.println(DateUtil.getDateTimeStr(new Date(), "yyyy-MM-dd HH:mm:ss SSS") + "|" + action + "|" + fileName + "|" + key + "|" + value);
 
     }
 
 
-    private void createIfNotexsist(File file) {
+    public void createIfNotexsist(File file) {
         //创建文件
         if (!file.exists()) {
             file.getParentFile().mkdirs();
@@ -100,14 +132,14 @@ public class FileDb {
 
     private String readFile(File file) throws IOException {
         if (!file.exists()) {
-            return  null;
+            return null;
         }
         String content = FileUtil.readFile(file.getAbsolutePath());
         return content;
     }
 
     private void write(File file, String key, String value, boolean persistence) throws IOException {
-        JSONObject jsonObject = read2Json(file,false);
+        JSONObject jsonObject = read2Json(file, false);
         jsonObject.put(key, value);
         if (jsonObjectCache == null) {
             jsonObjectCache = new JSONObject();
@@ -120,7 +152,7 @@ public class FileDb {
 
 
     private void delete(File file, String key, boolean persistence) throws IOException {
-        JSONObject jsonObject = read2Json(file,  true);
+        JSONObject jsonObject = read2Json(file, true);
         jsonObject.remove(key);
         if (jsonObjectCache == null) {
             jsonObjectCache = new JSONObject();
@@ -132,7 +164,11 @@ public class FileDb {
     }
 
 
-    private JSONObject read2Json(File file, boolean caseNillReadFile) throws IOException {
+    /**
+     * 只读取一次
+     * 是否读取文本
+     */
+    public JSONObject read2Json(File file, boolean caseNillReadFile) throws IOException {
 
         JSONObject jsonContent = null;
         if (jsonObjectCache != null) {
@@ -150,7 +186,7 @@ public class FileDb {
             }
 
         }
-        if(jsonContent == null){
+        if (jsonContent == null) {
             jsonContent = new JSONObject();
             if (jsonObjectCache == null) {
                 jsonObjectCache = new JSONObject();
@@ -165,8 +201,8 @@ public class FileDb {
         //  System.out.println(System.getProperty("user.home"));
         // System.out.println(System.getProperty("user.dir"));
 
-       //  FileDb.getInstance().insert("test","32","this is a ois doc.");
-       // FileDb.getInstance().remove("test", "32");
+        //  FileDb.getInstance().insert("test","32","this is a ois doc.");
+        // FileDb.getInstance().remove("test", "32");
         System.out.println(FileDb.getInstance().read("test", "32"));
 
     }
