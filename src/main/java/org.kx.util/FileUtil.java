@@ -267,6 +267,17 @@ public class FileUtil {
     }
 
     /**
+     * 是否为文本
+     *
+     * @return
+     */
+    public static boolean isJava(String fileSuffix) {
+
+
+        return fileSuffix.equals("java") ;
+    }
+
+    /**
      * 是否为图片
      *
      * @return

@@ -3,8 +3,10 @@ package org.kx.util.security;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.kx.util.FileUtil;
+import org.kx.util.generate.IdGenerate;
 
 import java.io.*;
+import java.util.List;
 
 /**
  * Description ：
@@ -15,10 +17,35 @@ import java.io.*;
 public class ReadTest {
 
 
+
+
+    String trasFerDir =" ";
+    String sourceDir = " ";
+    String reTDir = " ";
+
+
     @Test
-    public void transfer() throws Exception {
+    public void tDir() throws Exception {
+
+        List<File> files = FileUtil.filterHidden(sourceDir ,FileUtil.showListFile(new File(sourceDir)));
+        String newFIle = IdGenerate.getId()+".txt";
+        for(File file :files){
+            if (FileUtil.isJava(FileUtil.getSuffix(file.getName()))) {
+                 transfer(file.getAbsolutePath(),trasFerDir+newFIle);
+            }
+        }
+    }
+
+
+    @Test
+    public void t1Dir() throws Exception {
+        String newFIle = IdGenerate.getId()+".txt";
+        transfer("",trasFerDir+newFIle);
+    }
+
+
+    public void transfer(String filePath,String dPath) throws Exception {
         LineAbility lineAbility = new LineAbility();
-        String filePath = "";
         File file = new File(filePath);
         StringBuffer sb = new StringBuffer();
         InputStream is = new FileInputStream(file);
@@ -37,20 +64,22 @@ public class ReadTest {
             lineAbility.parsingOriginLine(lineInfo) ;
             lineAbility.dictOriginLine(lineInfo) ;
             sb.append(lineInfo.getDictedLine());
-            sb.append("\n");
+            sb.append(LineAbility.NEWLINE);
             line = reader.readLine(); // 读取下一行
         }
         reader.close();
         is.close();
-        //System.out.println(sb.toString());
+        sb.append("\n");
         MyDict.upgradeDict();
-        FileUtil.writeStringToFile(sb.toString(),FileDict.filepath);
+        FileUtil.appedStringToFile(sb.toString(),dPath);
     }
+
+
 
     @Test
     public void retransfer() throws Exception {
         LineAbility lineAbility = new LineAbility();
-        String filePath = FileDict.filepath;
+        String filePath = "";
         StringBuffer sb = new StringBuffer();
         InputStream is = new FileInputStream(filePath);
         InputStreamReader ireader = new InputStreamReader(is, "UTF-8");
@@ -63,17 +92,24 @@ public class ReadTest {
                 line = reader.readLine(); // 读取下一行
                 continue;
             }
-            LineInfo lineInfo = new  LineInfo();
-            lineInfo.setDictedLine(line);
-            lineAbility.reDictLine(lineInfo) ;
-            sb.append(lineInfo.getOriginLine());
-            sb.append("\n");
+            String newFIle = IdGenerate.getId()+".txt";
+            String[] lines =  line.split(LineAbility.NEWLINE);
+            for(String line_ :lines){
+                if(StringUtils.isBlank(line_)){
+                    continue;
+                }
+                LineInfo lineInfo = new  LineInfo();
+                lineInfo.setDictedLine(line_);
+                lineAbility.reDictLine(lineInfo) ;
+                sb.append(lineInfo.getOriginLine());
+                sb.append("\n");
+            }
+            FileUtil.writeStringToFile(sb.toString(),reTDir+newFIle);
             line = reader.readLine(); // 读取下一行
         }
         reader.close();
         is.close();
-        System.out.println(sb.toString());
-        //FileUtil.writeStringToFile(sb.toString(),FileDict.targetFilepath);
-    }
 
+
+    }
 }

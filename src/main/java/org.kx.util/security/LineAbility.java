@@ -17,6 +17,7 @@ import java.util.List;
 public class LineAbility {
 
     static String KONGGE = " ";
+    static String NEWLINE = "NL";
     //public  static final String NEWLINE ="NEWLINE";
 
     @Test
