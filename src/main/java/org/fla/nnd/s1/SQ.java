@@ -36,7 +36,7 @@ public class SQ extends Cx {
     public void readPath2EncryptTxt() throws IOException {
         String path = System.getProperty("user.home") +"/temp/ho/32.txt";
 
-        String temp[]=path.split("/");
+         String temp[]=path.split("/");
         String fileName=temp[temp.length-1];
         if(fileName.contains(".")){
             String[] sd=fileName.split("\\.");

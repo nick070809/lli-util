@@ -372,6 +372,10 @@ public class FileUtil {
         return files.stream().filter(e -> filterHidden(dirpath, e)).collect(Collectors.toList());
     }
 
+    public static List<File> filteTest(List<File> files) {
+        return files.stream().filter(e -> !e.getAbsolutePath().contains("test")).collect(Collectors.toList());
+    }
+
 
     //判断编码格式方法
     public static String getFilecharset(File sourceFile) {

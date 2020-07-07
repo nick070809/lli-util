@@ -2,6 +2,8 @@ package org.kx.util.security;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * Description ：
  * Created by  xianguang.skx
@@ -11,6 +13,10 @@ import lombok.Data;
 public class LineInfo {
 
     private  String originLine ;
+
+    private  String standOriLine ;
+
+    private List<String> standOriLines ;
 
     private  String preDictLine ;
 

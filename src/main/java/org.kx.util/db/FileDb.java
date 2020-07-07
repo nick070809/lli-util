@@ -46,7 +46,7 @@ public class FileDb {
         File file = new File(filepath);
         createIfNotexsist(file);
         write(file, key, value, persistence);
-        //backup(fileName, key, value, "insert");
+        backup(fileName, key, value, "insert");
         return 1;
     }
 

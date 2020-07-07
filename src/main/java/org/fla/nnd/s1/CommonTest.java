@@ -1,5 +1,6 @@
 package org.fla.nnd.s1;
 
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.Months;
 import org.junit.Test;
@@ -7,7 +8,7 @@ import org.kx.util.DateUtil;
 import org.kx.util.FileUtil;
 import org.kx.util.mail.MailSendUtil;
 
-import java.io.IOException;
+import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.ParseException;
@@ -87,6 +88,99 @@ public class CommonTest {
         MailSendUtil.sendCommonMail("King",content);
 
     }
+
+
+
+    @Test
+    public  void redd() throws Exception {
+        String filePath =  "/Users/xianguang/temp/2559526500090588" ;
+        StringBuffer buffer = new StringBuffer();
+        InputStream is = new FileInputStream(filePath);
+        InputStreamReader ireader = new InputStreamReader(is, "UTF-8");
+        String line; // 用来保存每行读取的内容
+        BufferedReader reader = new BufferedReader(ireader);
+        line = reader.readLine(); // 读取第一行
+        while (line != null) { // 如果 line 为空说明读完了
+            String[] ss = line.split("\t");
+            StringBuffer buffer2 = new StringBuffer("INSERT INTO TABLE  xx  PARTITION(ds='ss') select ");
+            int index = 0 ;
+            for(String word :ss){
+                if(StringUtils.isNotBlank(word)){
+                    index ++ ;
+                    if(index == 3) {
+                        buffer2.append("NULL").append(",").append("\'").append(word).append("\'").append(",");
+                        continue;
+                    }
+                    if(index == 4) {
+                         continue;
+                    }
+                    if(index == 5) {
+                        continue;
+                    }
+                    if(index == 6) {
+                        buffer2.append("\'201903198481002031\'").append(",");
+
+                    }
+
+                        buffer2.append("\'").append(word).append("\'").append(",");
+
+
+
+                }
+            }
+            String sss = buffer2.toString();
+            sss = sss.substring(0,sss.length()-1)+" ;";
+
+            buffer.append(sss); // 将读到的内容添加到 buffer 中
+            buffer.append("\n"); // 添加换行符
+            line = reader.readLine(); // 读取下一行
+        }
+        reader.close();
+        is.close();
+        System.out.println(buffer.toString());
+
+    }
+
+
+    @Test
+    public void redd2() throws Exception {
+        String filePath = "/Users/xianguang/temp/2559526500770874";
+        StringBuffer buffer = new StringBuffer();
+        InputStream is = new FileInputStream(filePath);
+        InputStreamReader ireader = new InputStreamReader(is, "UTF-8");
+        String line; // 用来保存每行读取的内容
+        BufferedReader reader = new BufferedReader(ireader);
+        line = reader.readLine(); // 读取第一行
+        while (line != null) { // 如果 line 为空说明读完了
+            String[] ss = line.split("\t");
+            StringBuffer buffer2 = new StringBuffer();
+            int index = 0;
+            for (String word : ss) {
+                if (StringUtils.isNotBlank(word)) {
+                    index++;
+                    if (index == 3) {
+                        buffer2.append("\t").append(word.substring(0, word.length() - 2));
+                    } else if (index == 1) {
+                        buffer2.append(word).append("\t");
+                    } else {
+                        buffer2.append("\t").append(word);
+                    }
+
+
+                }
+            }
+            String sss = buffer2.toString();
+            buffer.append(sss); // 将读到的内容添加到 buffer 中
+            buffer.append("\n"); // 添加换行符
+            line = reader.readLine(); // 读取下一行
+        }
+        reader.close();
+        is.close();
+       // System.out.println(buffer.toString());
+        FileUtil.writeStringToFile(buffer.toString(),"/Users/xianguang/temp/25595265007708745");
+    }
+
+
 
 
 }

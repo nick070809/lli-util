@@ -53,11 +53,12 @@ public enum Symbol {
     SHENGHAO_("*"),
     CHUHAO_("/"),
 
-    SHUZI_("SHUZI_"),
-    ZHONGWEN_("ZHONGWEN_"),
+    SZ_("SHUZI_"),
+    ZW_("ZHONGWEN_"),
    // KONGGE(" "),
     ZHONGWENKONGGE_(" "),
-    HUANHANG("\\n"),
+    HUANHANG_("\\n"),
+    BIAOGE_("\t"),
     ;
 
 
