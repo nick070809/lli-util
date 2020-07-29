@@ -1,9 +1,13 @@
 package org.kx.util;
 
+import org.apache.commons.lang3.time.DateUtils;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class DateUtil {
 
@@ -101,9 +105,42 @@ public class DateUtil {
         return lastDate;
     }
 
-    public static void main(String ...s) throws InterruptedException {
-        Date dd= new Date();
 
-        System.out.println(getMonthLastDay(dd));
+    /**
+     * 月减模式
+     * now , -1, 12*5
+     */
+    public static List<String> getMonthReduces(Date now,int interval,int allMonths) {
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < allMonths; i++) {
+            Date lastMonth =  DateUtils.addMonths(now, i*interval);
+            String ddd = DateUtil.getDateTimeStr(lastMonth,"yyyyMM");
+            list.add(ddd);
+        }
+        return list;
+    }
+
+    /**
+     * 日减模式
+     * now , -1, 12*5*30
+     */
+    public static List<String> getDayReduces(Date now,int interval,int allDays) {
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < allDays; i++) {
+            Date lastDay =  DateUtils.addDays(now, i*interval);
+            String ddd = DateUtil.getDateTimeStr(lastDay,"yyyyMMdd");
+            list.add(ddd);
+        }
+        return list;
+    }
+
+
+
+    public static void main(String ...s) throws InterruptedException, ParseException {
+        Date dd= DateUtil.getDate("20160930","yyyyMMdd");
+        List<String> das = getDayReduces(dd,-1,20);
+        StringBuilder sc = new StringBuilder();
+        das.stream().forEach(e ->sc.append(e).append(","));
+        System.out.println(sc.toString());
      }
 }
