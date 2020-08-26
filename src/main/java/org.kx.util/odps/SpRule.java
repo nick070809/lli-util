@@ -15,8 +15,8 @@ import java.util.List;
 
 public class SpRule extends   OdpsTable {
 
-    String tablenName = "s_hj_settle_sp_rule";
-    String[] colmuns = {"parent_id", "biz_order_id", "execute_id", "biz_type", "settle_fee", "out_account", "execute_status", "available", "seller_id"};
+    String tablenName = "*";
+    String[] colmuns = {"*"*", "*", "*", "*", "*", "*", "*", "*"};
 
 
     @Override
@@ -26,7 +26,7 @@ public class SpRule extends   OdpsTable {
 
     @Override
     public String getOriginName() {
-        return "huijin.s_hj_execute_rule";
+        return "*";
     }
 
     @Override
@@ -56,7 +56,7 @@ public class SpRule extends   OdpsTable {
 
     //获取分区后语句
     public   String getPartitionSuffixSql() throws IOException {
-        return " ) and biz_type not in (0,100)";
+        return " ) and * not in (0,100)";
     }
 
     @Override
