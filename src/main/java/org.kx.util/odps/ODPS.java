@@ -105,8 +105,8 @@ public class ODPS {
         StringBuilder sbt = new StringBuilder();
         for(String word :words){
 
-            if(Validator.isNum(word)){
-                word = "'"+word ;
+            if(Validator.isNum(word) && word.length() >5){
+                word = "\'"+word ;
             }
             if(sbt.length() >0){
                 sbt.append(",").append(word);
