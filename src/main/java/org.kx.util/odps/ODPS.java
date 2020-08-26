@@ -1,5 +1,6 @@
 package org.kx.util.odps;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.kx.util.FileUtil;
 import org.kx.util.Validator;
@@ -32,8 +33,10 @@ public class ODPS {
         StringBuilder resultContent = new StringBuilder();
 
         while (line != null) { // 如果 line 为空说明读完了
-            String thisline = line.replace("\u001B[K", "");
-            resultContent.append(parseLine(thisline)).append("\n");
+            String parsedLine = parseLine(line);
+            if(parsedLine != null){
+                resultContent.append(parsedLine).append("\n");
+            }
             line = reader.readLine(); // 读取下一行
         }
         reader.close();
@@ -84,15 +87,20 @@ public class ODPS {
 
 
     private  String parseLine(String line){
-        if(line.startsWith("---")){
-            return  "";
+        if(StringUtils.isBlank(line)){
+            return null;
         }
+        if(line.startsWith("---")){
+            return  null;
+        }
+        line = line.replace("\u001B[K", "");
+
         String[] words = line.split(",");
         if(clomunSize == 0){
             clomunSize =words.length;
         }
         if(words.length== 0 || words.length != clomunSize){
-            return "";
+            return null;
         }
         StringBuilder sbt = new StringBuilder();
         for(String word :words){
@@ -105,8 +113,6 @@ public class ODPS {
             }else {
                 sbt.append(word);
             }
-
-
         }
         return sbt.toString();
     }
