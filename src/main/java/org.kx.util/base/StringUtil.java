@@ -110,6 +110,9 @@ public class StringUtil {
         for (String i : strs) {
             String s = i.trim();
             if (StringUtils.isNotBlank(s)) {
+                if(s.startsWith("\'") || s.startsWith("'")){
+                    s = s.substring(1);
+                }
                 if (sbt.length() > 0) {
                     sbt.append(",").append(s);
                 } else {

@@ -2,6 +2,7 @@ package org.kx.util.odps;
 
 import org.junit.Test;
 import org.kx.util.FileUtil;
+import org.kx.util.Validator;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -18,6 +19,7 @@ import java.util.List;
 
 public class ODPS {
 
+    Integer clomunSize = 0;
     //处理odps的文件
     @Test
     public void readOdpsFile() throws Exception {
@@ -28,14 +30,15 @@ public class ODPS {
         BufferedReader reader = new BufferedReader(ireader);
         line = reader.readLine(); // 读取第一行
         StringBuilder resultContent = new StringBuilder();
+
         while (line != null) { // 如果 line 为空说明读完了
             String thisline = line.replace("\u001B[K", "");
-            resultContent.append(thisline).append("\n");
+            resultContent.append(parseLine(thisline)).append("\n");
             line = reader.readLine(); // 读取下一行
         }
         reader.close();
         is.close();
-        FileUtil.writeStringToFile(resultContent.toString(), "/Users/xianguang/Downloads/down/od1.txt");
+        FileUtil.writeStringToFile(resultContent.toString(), "/Users/xianguang/Downloads/down/odps.csv");
     }
 
 
@@ -43,7 +46,7 @@ public class ODPS {
     @Test
     public void filterNewConfigs() throws Exception {
         String newIds = FileUtil.readFile("/Users/xianguang/Downloads/down/od1.txt");
-        String oldIds = FileUtil.readFile("/Users/xianguang/Downloads/down/od.txt");
+        String oldIds =  FileUtil.readFile("/Users/xianguang/Downloads/down/odx.txt");
 
         List<String> nIds = new ArrayList<>();
 
@@ -75,8 +78,37 @@ public class ODPS {
             sbt1.append(id).append(",");
 
         }
-        FileUtil.writeStringToFile(sbt1.toString(), "/Users/xianguang/Downloads/down/odx.txt");
+        FileUtil.writeStringToFile(sbt1.toString(), "/Users/xianguang/Downloads/down/od.txt");
 
+    }
+
+
+    private  String parseLine(String line){
+        if(line.startsWith("---")){
+            return  "";
+        }
+        String[] words = line.split(",");
+        if(clomunSize == 0){
+            clomunSize =words.length;
+        }
+        if(words.length== 0 || words.length != clomunSize){
+            return "";
+        }
+        StringBuilder sbt = new StringBuilder();
+        for(String word :words){
+
+            if(Validator.isNum(word)){
+                word = "'"+word ;
+            }
+            if(sbt.length() >0){
+                sbt.append(",").append(word);
+            }else {
+                sbt.append(word);
+            }
+
+
+        }
+        return sbt.toString();
     }
 
 }
