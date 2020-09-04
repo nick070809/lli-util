@@ -1,13 +1,18 @@
 package org.kx.util.base;
 
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 
 /**
@@ -322,6 +327,24 @@ public class StringUtil {
     }
 
 
+    public  static List<String> buildList(String str){
+        return  Arrays.asList(str.split(",")).stream().map(s -> s.trim()).collect(Collectors.toList());
+    }
+
+
+    public  static  String buildJosnHtml(String str){
+        if(StringUtils.isBlank(str)){
+            return  "" ;
+        }
+        StringBuilder title = new StringBuilder();
+        Map<String,Object> mapType = JSON.parseObject(str,Map.class);
+        for (Object obj : mapType.keySet()){
+            title.append(obj+" = "+mapType.get(obj)+"<br/>");
+        }
+        return title.toString();
+    }
+
+
 
     /**
      * 数据库列名称构造对象属性名称
@@ -380,10 +403,10 @@ public class StringUtil {
 
 
     public static void main(String... s) {
-        String sss ="2201413717562,2200657715182,2641546987,2631942246,2201225963721,2205884707813,3980771770,4073846757,2206781751396,2200657974488,2085938070,3200271173,4074914497,3925705463,2204191394870,2452830586,2316003304,2138379800,2170968104,2206446213812,2549599360,3586492189,2255459295,4229074189,2368797506,2031979990,2611862987,4028870603,4263377845,4093769125,2206372202026,3917814910,2206445356761,4050264010,2206386276113,2200784687700,4038544812,2201230376636,2760506346,2980713334,2200540802479,2200647497505,2974720004,2201168176213,2159616682,3038267337,2201471019974,2205223260746,2201444244244,2200757967709,3984972463,4154678310,4033682043,2064657420,3008786874,2206407472115,2849136065,3230463886,4130369596,2201479466820,2200727015554,2166290049,2201196294013,3487097004,3319205504,3840241650,2095455386,4277857023,2206465258082,3684403239,2175912342,2634266092,4044374317,2206438938204,2424228634,2200722976014,2206377715400,2536205015,2206521377582,2201114660145,4020590985,2200736505364,2202893664639,4069918541,3247051043,4065259533,2200709858418,2201506998074,2206436598338,2206397949433,2207284114499,2200700305888,2916259684,2206353607607,2200657974488,2200657715182" ;//strTo16(sss) ;
+        String sss ="{  }";
 
 
-        System.out.println(removeRepeat(sss));
+        System.out.println(buildJosnHtml(sss));
     }
 
 

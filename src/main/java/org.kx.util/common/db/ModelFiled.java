@@ -24,7 +24,7 @@ public class ModelFiled {
     private String setMethod;
     private Object value;
     private String getMethod;
-
+    private boolean htmlShow;
 
 
     public ModelFiled(String fieldName, String clomunName, String javaType, String jdbcType, String clomunType, String clomunChnName) {
@@ -173,6 +173,19 @@ public class ModelFiled {
 
 
     }
+
+
+    public String getHtmlValue() throws Exception {
+        if(value == null){
+            return "";
+        }
+        if (value instanceof Date) {
+            return  DateUtil.getDateTimeStr((Date) value, "yyyy-MM-dd HH:mm:ss");
+        }
+        return value.toString();
+    }
+
+
 
     public void setValue(Object value) {
         this.value = value;
