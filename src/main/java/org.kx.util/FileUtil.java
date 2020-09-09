@@ -300,6 +300,24 @@ public class FileUtil {
     }
 
 
+    /**
+     * 是否为图片
+     *
+     * @return
+     */
+    public static String getFileName(String fileName) {
+
+        if(fileName.contains("/")){
+            fileName =  fileName.substring(fileName.lastIndexOf("/")) ;
+        }
+        if(fileName.contains(".")){
+            return fileName.substring(0,fileName.lastIndexOf(".") );
+        }
+        return fileName;
+    }
+
+
+
     public static void readAll(String filepath) throws Exception {
         String dirPath = filepath.substring(0, filepath.lastIndexOf(File.separator));
         String dirName = "PZ";

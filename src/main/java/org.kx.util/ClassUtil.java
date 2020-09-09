@@ -37,8 +37,12 @@ public class ClassUtil {
         try {
             Method[] methods = clazz.getMethods();
             for (Method temp : methods) {
-                if (temp.getName().startsWith(prefix))
+                if(prefix == null){
                     method.add(temp);
+                }else if (temp.getName().startsWith(prefix)){
+                    method.add(temp);
+                }
+
             }
         }
         catch (Exception ex)

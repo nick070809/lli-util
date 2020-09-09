@@ -41,7 +41,31 @@ public class ODPS {
         }
         reader.close();
         is.close();
-        FileUtil.writeStringToFile(resultContent.toString(), "/Users/xianguang/Downloads/down/odps.csv");
+        FileUtil.writeStringToFile(resultContent.toString(), "/Users/xianguang/Downloads/down/item2.csv");
+    }
+
+
+    //处理odps的文件
+    @Test
+    public void readLogFile() throws Exception {
+        String filePath = "/Users/xianguang/Downloads/down/remote.log";
+        InputStream is = new FileInputStream(filePath);
+        InputStreamReader ireader = new InputStreamReader(is, "UTF-8");
+        String line; // 用来保存每行读取的内容
+        BufferedReader reader = new BufferedReader(ireader);
+        line = reader.readLine(); // 读取第一行
+        StringBuilder resultContent = new StringBuilder();
+
+        while (line != null) { // 如果 line 为空说明读完了
+            String parsedLine = parseLine(line);
+            if(parsedLine != null){
+                resultContent.append(parsedLine).append("\n");
+            }
+            line = reader.readLine(); // 读取下一行
+        }
+        reader.close();
+        is.close();
+        FileUtil.writeStringToFile(resultContent.toString(), "/Users/xianguang/Downloads/down/log.txt");
     }
 
 

@@ -22,25 +22,30 @@ public class MarkDownParser {
      * 提供 2 种构造方法，如新建类时提供了 markdown 文件名，则无需调用 readMarkdownFile 方法读入文件
      * 否则需主动调用 readMarkdownFile 方法读入文件
      */
-    public MarkDownParser() {}
-    public MarkDownParser(String fileName) {
-        readMarkdownFile(fileName);
+    public MarkDownParser(String fileName,  String content) {
+        readMarkdownFile(fileName,new ByteArrayInputStream(content.getBytes()));
+    }
+
+    public MarkDownParser(String filePth) throws FileNotFoundException {
+        fileName = filePth.substring(filePth.lastIndexOf('/') + 1, filePth.lastIndexOf('.'));
+        FileInputStream fis = new FileInputStream(filePth);
+        readMarkdownFile(fileName,fis);
     }
 
     /**
      * 通过文件名读取一个 markdown 文件
       * @return 如果文件存在，返回 true；否则，返回false
      */
-    public boolean readMarkdownFile(String fileName) {
+    public boolean readMarkdownFile(String fileName,InputStream is ) {
         try {
             mdList.clear();
             mdListType.clear();
 
-            fileName = fileName.trim();
-            FileInputStream fis = new FileInputStream(fileName);
-            InputStreamReader dis = new InputStreamReader(fis, "UTF-8");
+            //InputStreamReader dis = new InputStreamReader(is, "UTF-8");
+            InputStreamReader dis = new InputStreamReader(is);
             BufferedReader mdFile = new BufferedReader(dis);
-            this.fileName = fileName.substring(fileName.lastIndexOf('/') + 1, fileName.lastIndexOf('.'));
+
+            this.fileName = fileName;
 
             // 读取 makedown 文件
             String mdLine;
@@ -68,7 +73,7 @@ public class MarkDownParser {
       * @return 如果文件存在，返回 true；否则，返回false
      */
     public boolean createHtmlFile() {
-        return createHtmlFile(fileName + ".html");
+        return createHtmlFile("/Users/xianguang/IdeaProjects/nick070809/lli-util/temp/temp2.html");
     }
 
 
@@ -504,7 +509,7 @@ public class MarkDownParser {
         }
         return line;
     }
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         MarkDownParser md = new MarkDownParser("/Users/xianguang/IdeaProjects/nick070809/autoEntry/a-docs/flink/readme.md");
         md.createHtmlFile();
         //System.out.println(md.toHtmlString());

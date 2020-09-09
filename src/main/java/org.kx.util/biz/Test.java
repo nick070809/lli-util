@@ -1,6 +1,8 @@
 package org.kx.util.biz;
 
+import nick.doc.MdCtrl;
 import org.kx.util.FileUtil;
+import org.kx.util.generate.HtmlGenerate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,4 +39,34 @@ public class Test {
 
 
     }
+
+
+    @org.junit.Test
+    public  void htmlTest() throws Exception {
+        HtmlGenerate htmlGenerate = new HtmlGenerate();
+        String html = getHtml(MdCtrl.getMdCtrl().getDocList());
+
+        FileUtil.writeStringToFile(html,"/Users/xianguang/IdeaProjects/nick070809/lli-util/temp/teml.html");
+
+    }
+
+
+    @org.junit.Test
+    public  void html2Test() throws Exception {
+        MdCtrl.getMdCtrl().loadself();
+    }
+
+
+
+    public  String getHtml(String content){
+        return  "<html>\n" +
+                "    <head>\n" +
+                "        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/> " +
+                " </head>\n" +
+                "    <body>\n"+content+
+                "   </body>\n" +
+                "</html>" ;
+    }
+
+
 }
