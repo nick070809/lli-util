@@ -118,6 +118,9 @@ public class StringUtil {
                 if(s.startsWith("\'") || s.startsWith("'")){
                     s = s.substring(1);
                 }
+                if(s.endsWith(",")){
+                    s = s.substring(0,s.length() -1);
+                }
                 if (sbt.length() > 0) {
                     sbt.append(",").append(s);
                 } else {

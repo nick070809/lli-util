@@ -1,5 +1,7 @@
 package org.kx.util.io;
 
+import org.kx.util.FileUtil;
+
 import java.io.*;
 
 /**
@@ -25,6 +27,8 @@ public class IoUtil {
 
     public static void DataInput2File(InputStream dataInputStream,String targetPath) throws IOException {
 
+        String dirPath = targetPath.substring(0, targetPath.lastIndexOf("/"));
+        FileUtil.createDir(dirPath);
         DataOutputStream out = new DataOutputStream(new  FileOutputStream(targetPath));
         BufferedInputStream  bufferedInput = new BufferedInputStream(dataInputStream);
         BufferedOutputStream  bufferedOutput = new BufferedOutputStream(out);

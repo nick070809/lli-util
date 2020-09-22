@@ -5,6 +5,7 @@ import org.kx.util.JarFileReader;
 import org.kx.util.base.MarkDownParser;
 import org.kx.util.generate.HtmlGenerate;
 import org.kx.util.io.IoUtil;
+import org.kx.util.rsa.RsaCommon;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,9 +38,14 @@ public class MdCtrl {
 
 
     private void read2Html(MdDoc mdDoc) {
-        //TODO 解密
+        //解密
+        String origContent =  mdDoc.getOrigContent();
+        if(mdDoc.isPrivate()) {
+            origContent = RsaCommon.decryptByPublicKey(origContent.trim());
+        }
+
         if (mdDoc.isDoc()) {
-            MarkDownParser md = new MarkDownParser(mdDoc.getName(), mdDoc.getOrigContent());
+            MarkDownParser md = new MarkDownParser(mdDoc.getName(),origContent);
             mdDoc.setHtmlContent(md.toHtmlString());
         }
     }
@@ -66,13 +72,14 @@ public class MdCtrl {
                         throw new RuntimeException("not found xian_app jar path !");
                     }
                 }
+                System.out.println("appJarpath ==== "+appJarpath);
                 org.springframework.boot.loader.jar.JarFile jarFile = new org.springframework.boot.loader.jar.JarFile(appJarFile);
                 InputStream inputStream = jarFile.getInputStream(jarFile.getJarEntry("BOOT-INF/lib/lli-util-1.0-SNAPSHOT.jar"));
                 IoUtil.DataInput2File(inputStream, myJarPath);
+                System.out.println("myJarPath ==== "+myJarPath);
                 docs = JarFileReader.list(myJarPath);
 
                 docs.stream().forEach(mdDoc -> {
-                    mdDoc.setName(FileUtil.getFileName(mdDoc.getPath()));
                     try {
                         mdDoc.setOrigContent(JarFileReader.read(myJarPath, mdDoc.getPath()));
                         read2Html(mdDoc);
@@ -82,8 +89,10 @@ public class MdCtrl {
                     }
 
                 });
+                init = true ;
             }
         } catch (Throwable ex) {
+            ex.printStackTrace();
             System.out.println("nick.doc.MdCtrl.init ex " + ex);
         }
     }

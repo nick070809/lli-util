@@ -41,14 +41,14 @@ public class RsaCommon {
                 return  rasMap;
             }else {
                 File flied = new File(filePath);
-                //if(flied.exists()){
+                if(flied.exists()){
                     String content = FileUtil.readFile(filePath);
                     rasMap =JSONObject.parseObject(content);
                     return rasMap;
-                //}
-                /*rasMap = new JSONObject();
-                rasMap.put("PrivateKey","MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBAKfr7l5mv6RSOMhusUC4L6pg08GoIad3Vy7McZZlgmbqBtJL9gUXJO5D3V25jEsqGVGaptuO7OpT7oAZte1R10CwP+j8i67DadYbQr3w+kSs1NyXsCyLZbrWRUtR04Ep7Tzqmcas2P2hPH4BQ+7zeEv/RlsTIi3ntQztpBT81xQxAgMBAAECgYBAATm2WcuqQnzKSQbe+FWSx51vLzrErkRY3ixdewudVo6LEdEQV6YH+24hD1xeOgm0hRIclfnPx3Yc9a/WaV919PTQnUHrDRhC2+/d4ol10NL05VE/VvDDAy/VrULu9hTYtZ2k7UBWiAvxCsf8gPO4tzd3WkDnODwGadnTKFgWwQJBAPAcYYvPnerG6zxO/80OR8yKrh/PL/RSDQakDZiIb88LF4btn1rNt5J50EeQJEjDZ4r/WwnH3DdbzEi93XwwoSUCQQCzCJ8nad9BTEzXdqexUAwvHGp6mnjrW2V1lJtCFHaOSlI10YNR03wVDEpfOH4fqCBlhKCBdYXxaXVh9KLMqJcdAkANWra+LOzuiuO4dfhaMkoiATCQCljzcMDStrse2a/GRyqm0X6EcV6dYfMIl+a8uUl//JXWpGwGFC/3d7/i0V2VAkBTug98RjYDeqRhC3unH7FjAt4FEmLEZszPLT1irOE48Cb8Rkwso0PfMA1D9M5/DYiBEYJiqMyINvKPafIM1jc9AkAol6lMaYj1/F59LC9jK+iZHJQNECR2CrH4Q2A7DUFFS34iVwHxPPlN+0PDFOEwJN5SP/KAJBsqEbKZgv+JqgYa");
-                return rasMap;*/
+                }
+                rasMap = new JSONObject();
+                rasMap.put("PublicKey","MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCIse0yVaokP/U12bnR0KtWLdyIV2A8IAo5Sfp5yE5bp+SmvJBGKZMN3xhUl+t+fhezIgCYrzoPA3a4gjCifRgu3L7hUrG1vzPwS7wMufnLT0KzW6fhU4XRrgoUsupeaS7Cpmg0/I/2HKC0vsrYlegUSgmowgliBHtNaIoMmI0NvQIDAQAB");
+                return rasMap;
             }
         }catch (Exception e){
             throw new RuntimeException(e);

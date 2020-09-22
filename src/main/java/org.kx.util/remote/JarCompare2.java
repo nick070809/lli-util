@@ -33,10 +33,11 @@ public class JarCompare2 {
         InputStream is = new FileInputStream(filePath);
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         for (String line = reader.readLine(); line != null; line = reader.readLine()) {
-            if (line.startsWith("-rw")) {
+            /*if (line.startsWith("-rw")) {
                 line  = line.substring("-rw-rw-r-- 1 admin admin   419592 May 28 19:23 ".length());
-            }
-            WriteJarVersion.parse(line,maps);
+            }*/
+            String[] words = line.split(" ");
+            WriteJarVersion.parse(words[words.length -1],maps);
         }
         reader.close();
         is.close();
@@ -53,10 +54,11 @@ public class JarCompare2 {
             if(StringUtils.isBlank(line)){
                 continue;
             }
-            if (line.startsWith("-rw")) {
+            String[] words = line.split(" ");
+            /*if (line.startsWith("-rw")) {
                 line  = line.substring("-rw-rw-r-- 1 admin admin   419592 May 28 19:23 ".length());
-            }
-            WriteJarVersion.parse(line,maps);
+            }*/
+            WriteJarVersion.parse(words[words.length -1],maps);
         }
 
         return maps ;

@@ -41,7 +41,7 @@ public class ODPS {
         }
         reader.close();
         is.close();
-        FileUtil.writeStringToFile(resultContent.toString(), "/Users/xianguang/Downloads/down/item2.csv");
+        FileUtil.writeStringToFile(resultContent.toString(), "/Users/xianguang/Downloads/down/biz_order_ids.csv");
     }
 
 

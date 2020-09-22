@@ -52,10 +52,14 @@ public class JarFileReader {
                 MdDoc mdDoc = new MdDoc();
                 String[] nameDeatils = name.split(File.separator);
                 if (nameDeatils.length == 3) {
+                    String fileName =  FileUtil.getFileName(name) ;
                     if (nameDeatils[0].equals("codes")) {
                         mdDoc.setCode(true);
+                        mdDoc.setName("CODE-"+ fileName);
+
                     } else if (nameDeatils[0].equals("docs")) {
                         mdDoc.setDoc(true);
+                        mdDoc.setName("DOC-"+ fileName);
                     }
 
                     if (nameDeatils[1].equals("private")) {
