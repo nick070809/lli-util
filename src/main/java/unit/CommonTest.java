@@ -14,7 +14,7 @@ public class CommonTest {
 
     @Test
     public  void readOriginFile() throws IOException {
-
+        System.out.println(2&1);
     }
 
 }

@@ -32,4 +32,5 @@ src/main/resources/miwen
 temp
 *.html
 
+/Users/xianguang/IdeaProjects/nick070809/lli-util/temp
 /src/main/java/org/kx/util/odps/SpRule.java
