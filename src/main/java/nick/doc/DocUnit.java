@@ -1,7 +1,5 @@
 package nick.doc;
 
-import org.junit.Test;
-
 import java.io.IOException;
 
 /**
@@ -12,26 +10,22 @@ import java.io.IOException;
 
 public class DocUnit extends AbstractCode {
 
-    public DocUnit(){
-        super.privateSource = "/Users/xianguang/IdeaProjects/nick070809/lli-util/src/main/resources/docs/private/日常常用.txt";
-        super.originSource = "/Users/xianguang/IdeaProjects/nick070809/lli-util/src/main/resources/docs/private/日常常用.md";
+
+    public DocUnit(MyDocLocationEnum myDocLocationEnum ) {
+        super.privateSource = myDocLocationEnum.getPrivateSource();
+        super.originSource = myDocLocationEnum.getOriginSource();
     }
 
-
-
-
-
-    @Test
     public void securityCodes() throws IOException {
         super.securityCodes();
     }
 
-    @Test
+
     public void showCodes() throws IOException {
         super.showCodes();
     }
 
-    @Test
+
     public void rebackCodes() throws IOException {
         super.rebackCodes();
     }

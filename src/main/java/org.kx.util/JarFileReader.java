@@ -20,7 +20,7 @@ public class JarFileReader {
     public static String read(String jarPath, String filePath) throws IOException {
 
        /* JarFile jarFile = new JarFile("/Users/xianguang/myDocs/lli-util.jar");
-        JarEntry jarEntry = jarFile.getJarEntry("docs/public/java核心卷.md");*/
+        JarEntry jarEntry = jarFile.getJarEntry("docs/public/java核心卷.txt");*/
 
         JarFile jarFile = new JarFile(jarPath);
         JarEntry jarEntry = jarFile.getJarEntry(filePath);

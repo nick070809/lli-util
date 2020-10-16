@@ -1,5 +1,6 @@
 package unit;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -14,7 +15,11 @@ public class CommonTest {
 
     @Test
     public  void readOriginFile() throws IOException {
-        System.out.println(2&1);
+        System.out.println(63&123);
     }
 
+
+    public static void main(String[] args) {
+        System.out.println(StringUtils.equalsIgnoreCase("1", null) );
+    }
 }

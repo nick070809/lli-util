@@ -45,8 +45,12 @@ public class MdCtrl {
         }
 
         if (mdDoc.isDoc()) {
-            MarkDownParser md = new MarkDownParser(mdDoc.getName(),origContent);
-            mdDoc.setHtmlContent(md.toHtmlString());
+            if(mdDoc.getPath().endsWith("md")){
+                MarkDownParser md = new MarkDownParser(mdDoc.getName(),origContent);
+                mdDoc.setHtmlContent(md.toHtmlString());
+            }else {
+                mdDoc.setHtmlContent(origContent.trim());
+            }
         }
     }
 
@@ -102,7 +106,7 @@ public class MdCtrl {
     public void loadself() {
         try {
             String myUtilPath = "/Users/xianguang/IdeaProjects/nick070809/lli-util/target/lli-util-1.0-SNAPSHOT.jar";
-            String content = JarFileReader.read(myUtilPath, "docs/public/java核心卷.md");
+            String content = JarFileReader.read(myUtilPath, "docs/public/java核心卷.txt");
             MdDoc mdDoc = new MdDoc();
             mdDoc.setName("docs/public/java核心2");
             mdDoc.setOrigContent(content);
