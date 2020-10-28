@@ -11,7 +11,7 @@ import java.io.IOException;
 public class DocUnit extends AbstractCode {
 
 
-    public DocUnit(MyDocLocationEnum myDocLocationEnum ) {
+    public DocUnit(MyDocLocationEnum myDocLocationEnum) {
         super.privateSource = myDocLocationEnum.getPrivateSource();
         super.originSource = myDocLocationEnum.getOriginSource();
     }
@@ -30,5 +30,8 @@ public class DocUnit extends AbstractCode {
         super.rebackCodes();
     }
 
+    public String getOriginDoc() throws IOException {
+        return super.getOriginDoc();
+    }
 
 }

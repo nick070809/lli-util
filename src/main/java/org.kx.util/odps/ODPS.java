@@ -35,6 +35,7 @@ public class ODPS {
         while (line != null) { // 如果 line 为空说明读完了
             String parsedLine = parseLine(line);
             if(parsedLine != null){
+                //parsedLine = filterLine(parsedLine);
                 resultContent.append(parsedLine).append("\n");
             }
             line = reader.readLine(); // 读取下一行
@@ -109,7 +110,11 @@ public class ODPS {
 
     }
 
+    private  String filterLine(String line){
 
+        String[] words =  line.split(",");
+        return   words[1];
+    }
     private  String parseLine(String line){
         if(StringUtils.isBlank(line)){
             return null;

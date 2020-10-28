@@ -31,8 +31,8 @@ public class JarCompare3 {
         SSH ssh2 = new SSH(remoteMechine.getTargetIp(),remoteMechine.getUserName(),remoteMechine.getUserPass());
         ssh2.SSHexec(libPathCmd_);
 
-        SFTPUtil.downloadSftpFile(ssh1,remoteMechine.getOldIp(), remoteMechine.getTargetTempFile(), remoteMechine.getOldLocalFile());
-        SFTPUtil.downloadSftpFile(ssh2,remoteMechine.getTargetIp(), remoteMechine.getTargetTempFile(), remoteMechine.getTargetLocalFile());
+        SFTPUtil.downloadSftpFile(ssh1, remoteMechine.getTargetTempFile(), remoteMechine.getOldLocalFile());
+        SFTPUtil.downloadSftpFile(ssh2, remoteMechine.getTargetTempFile(), remoteMechine.getTargetLocalFile());
 
         Map<String, String> old_ =  reWriteFile(remoteMechine.getOldLocalFile());
         Map<String, String> new_ =  reWriteFile(remoteMechine.getTargetLocalFile());

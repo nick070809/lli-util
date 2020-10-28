@@ -76,6 +76,16 @@ public abstract class AbstractCode {
     }
 
 
+    public String getOriginDoc() throws IOException {
+       /* String bizSource = FileUtil.readFile(privateSource);
+        bizSource = bizSource.trim();
+        return RsaCommon.decryptByPublicKey(bizSource);*/
+        return   FileUtil.readFile(originSource);
+    }
+
+
+
+
     public void showAllMethod() throws Exception {
         Object proxyObj = getObject();
         List<Method> allMethods = ClassUtil.getAllMethod(proxyObj.getClass(), null);

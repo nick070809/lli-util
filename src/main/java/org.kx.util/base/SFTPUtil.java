@@ -24,14 +24,13 @@ public class SFTPUtil {
     static String PATHSEPARATOR = "/";
 
 
-    public static void downloadSftpFile(SSH ssh ,String ftpHost,
-                                       String ftpPath,String destFile) throws JSchException {
+    public static void downloadSftpFile(SSH ssh ,String ftpPath,String destFile) throws JSchException {
 
         Session session = null;
         Channel channel = null;
 
         JSch jsch = new JSch();
-        session = jsch.getSession(ssh.getUser(), ftpHost, 22);
+        session = jsch.getSession(ssh.getUser(), ssh.getIp(), 22);
         session.setPassword(ssh.getPassword());
         session.setTimeout(100000);
         Properties config = new Properties();

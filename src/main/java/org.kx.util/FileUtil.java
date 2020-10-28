@@ -308,7 +308,7 @@ public class FileUtil {
     public static String getFileName(String fileName) {
 
         if(fileName.contains("/")){
-            fileName =  fileName.substring(fileName.lastIndexOf("/")) ;
+            fileName =  fileName.substring(fileName.lastIndexOf("/")+1) ;
         }
         if(fileName.contains(".")){
             return fileName.substring(0,fileName.lastIndexOf(".") );

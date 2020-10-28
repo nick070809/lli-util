@@ -3,6 +3,7 @@ package org.kx.util.base;
 import ch.ethz.ssh2.Connection;
 import ch.ethz.ssh2.Session;
 import com.alibaba.fastjson.JSONObject;
+import nick.doc.DocLocationManager;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,15 +27,18 @@ public class SSH {
     private Session session = null;
 
 
-
+    public  static SSH of(String ipaddr){
+        return  new SSH(ipaddr);
+    }
 
     public SSH(String ipaddr) {
         this.ip = ipaddr;
         if(pass == null || name == null){
             try {
-                JSONObject j = LogX.readAllData("/Users/xianguang/temp/data/private.log");
-                pass = (String)j.get("pass");
-                name = (String)j.get("name");
+                String content = DocLocationManager.getOriginDoc("安全配置");
+                JSONObject j = JSONObject.parseObject(content);
+                pass = (String)j.get("sshPwd");
+                name = (String)j.get("sshName");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -135,6 +139,8 @@ public class SSH {
         Map<String,String> map = System.getenv();
 
         System.out.println(map.get("USERNAME"));
+
+        new  SSH("11.11.11.1");
     }
 
 

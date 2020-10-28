@@ -5,11 +5,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
+import org.kx.util.FileUtil;
+import org.kx.util.config.SysConf;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.*;
+import java.math.BigDecimal;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -66,6 +67,20 @@ public class StringUtil {
             throw new BaseException(BaseErrorCode.SystemError, "json to array 转换错误");
         }
     }
+
+
+    /**
+     * String  to json
+     */
+    public static String toIds(List<Long> ids) {
+        StringBuilder sbt = new StringBuilder();
+        ids.stream().forEach(id ->{
+            sbt.append(id).append(",");
+        });
+
+        return   sbt.substring(0,sbt.length()-1) ;
+    }
+
 
     /**
      * 特殊字符处理
@@ -400,17 +415,144 @@ public class StringUtil {
 
 
 
-
-
-
-
-
-    public static void main(String... s) {
-        String sss ="{  }";
-
-
-        System.out.println(buildJosnHtml(sss));
+    //属性生成
+    public static String generateTcAttrStr(String attrs){
+        String[] lines = attrs.split("\n");
+        StringBuilder stv = new StringBuilder();
+        for(String line :lines){
+            String[] atrr = line.split("\t");
+            stv.append(atrr[0]).append(":").append(atrr[1]).append(";");
+        }
+        return  stv.toString();
     }
 
+    //odps  wmconcat
+    public static String wmconcatOdps(String attrs){
+        String[] lines = attrs.split("\n");
+        HashMap<String, BigDecimal>  h = new HashMap<>();
+
+
+        for(String line :lines){
+            String[] atrr = line.split("\t");
+            BigDecimal fb = new BigDecimal(atrr[0]);
+            String str =  sortStr(atrr[1]);
+            if(h.get(str) == null){
+                h.put(str,fb);
+            }else {
+                h.put(str,h.get(str).add(fb));
+            }
+        }
+
+        Iterator<Map.Entry<String, BigDecimal>> entries = h.entrySet().iterator();
+        while (entries.hasNext()) {
+            Map.Entry<String, BigDecimal> entry = entries.next();
+            System.out.println(entry.getKey() + "\t " + entry.getValue());
+        }
+
+
+
+        return  JSON.toJSONString(h);
+    }
+
+
+    public static String duplicateStr(String str){
+        String[] lines = str.trim().split(",");
+        StringBuilder sc = new StringBuilder();
+        Map<String,Integer> sd = new HashMap();
+        Arrays.asList(lines).forEach( word ->{
+            sd.put(word.trim(),1);
+        });
+
+        Iterator<Map.Entry<String, Integer>> entries = sd.entrySet().iterator();
+        while (entries.hasNext()) {
+            Map.Entry<String, Integer> entry = entries.next();
+            sc.append(entry.getKey()).append(",");
+        }
+
+        return  sc.toString() ;
+    }
+
+
+    public static String sortStr(String str){
+        String[] lines = str.trim().split(",");
+        Arrays.sort(lines);
+        return  Arrays.toString(lines) ;
+    }
+
+    public static  String  readsuperLongTxt (String filepath) throws IOException {
+        int sizee = 2000;
+        InputStream is = new FileInputStream(filepath);
+        InputStreamReader ireader = new InputStreamReader(is, "UTF-8");
+        String line; // 用来保存每行读取的内容
+        BufferedReader reader = new BufferedReader(ireader);
+        StringBuilder stringBuilder = new StringBuilder() ;
+        StringBuilder stringBuilder2 = new StringBuilder() ;
+        line = reader.readLine(); // 读取第一行
+        int size = 1;
+        while (!StringUtils.isBlank(line)) { // 如果 line 为空说明读完了
+            if(size % sizee ==0 ){
+                stringBuilder2.append(stringBuilder.substring(0,stringBuilder.length()-1)).append("\n\n\n") ;
+                stringBuilder = new StringBuilder();
+            }
+            stringBuilder.append(line).append(",");
+            size ++ ;
+            line = reader.readLine(); // 读取下一行
+        }
+        stringBuilder2.append(stringBuilder.substring(0,stringBuilder.length()-1)).append("\n") ;
+        reader.close();
+        is.close();
+        return   stringBuilder2.toString() ;
+    }
+
+
+    public static  List<String>  readsuperLongTxt2File (String filepath,Integer sizeSet) throws IOException {
+        int sizee = 2000;
+        if(sizeSet != null && sizeSet >0){
+            sizee = sizeSet;
+        }
+        List<String> filePaths = new ArrayList<>();
+        String fileName =FileUtil.getFileName(filepath);
+        String sufix =FileUtil.getSuffix(filepath);
+
+        InputStream is = new FileInputStream(filepath);
+        InputStreamReader ireader = new InputStreamReader(is, "UTF-8");
+        String line; // 用来保存每行读取的内容
+        BufferedReader reader = new BufferedReader(ireader);
+        StringBuilder stringBuilder = new StringBuilder() ;
+         line = reader.readLine(); // 读取第一行
+        int size = 0;
+        int sufixIndex = 1;
+        while (line != null) { // 如果 line 为空说明读完了
+            size ++ ;
+            if(StringUtils.isBlank(line)){
+                line = reader.readLine(); // 读取下一行
+                continue;
+            }
+            if(line.startsWith("'")){
+                line = line.substring(1);
+            }
+            if(size % sizee ==0 ){
+                String filePath =  SysConf.upLoadPath+fileName+"_"+sufixIndex+"."+sufix ;
+                FileUtil.writeStringToFile(stringBuilder.substring(0,stringBuilder.length()-1), filePath);
+                filePaths.add(filePath) ;
+                stringBuilder = new StringBuilder();
+                sufixIndex ++  ;
+            }
+            stringBuilder.append(line).append(",");
+            line = reader.readLine(); // 读取下一行
+        }
+        reader.close();
+        is.close();
+        String filePath =  SysConf.upLoadPath+fileName+"_"+sufixIndex+"."+sufix ;
+        FileUtil.writeStringToFile(stringBuilder.substring(0,stringBuilder.length()-1), filePath);
+        filePaths.add(filePath) ;
+        return   filePaths ;
+    }
+
+    public static void main(String[] args) throws IOException {
+        List<String> files = readsuperLongTxt2File("/ids.xml",20000);
+        String targetZipPath = SysConf.upLoadPath  + "d_ids.zip";
+        FileZip.compress(targetZipPath, files);
+    }
 
 }

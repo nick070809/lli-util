@@ -23,6 +23,9 @@ public enum MyDocLocationEnum {
     问题定位("/Users/xianguang/IdeaProjects/nick070809/lli-util/src/main/resources/docs/private/问题定位.txt",
             "/Users/xianguang/IdeaProjects/nick070809/lli-util/temp/docs/问题定位.txt"),
 
+    安全配置("/Users/xianguang/IdeaProjects/nick070809/lli-util/src/main/resources/docs/private/security.json",
+            "/Users/xianguang/IdeaProjects/nick070809/lli-util/temp/docs/security.json"),
+
     ;
 
     private String privateSource;

@@ -28,7 +28,7 @@ public class RemoteLog {
 
         SSH ssh = new SSH(remoteMechine.getTargetIp(), remoteMechine.getUserName(), remoteMechine.getUserPass());
         ssh.SSHexec(cmd_);
-        SFTPUtil.downloadSftpFile(ssh, remoteMechine.getTargetIp(), remoteMechine.getTargetTempFile(), remoteMechine.getTargetLocalFile());
+        SFTPUtil.downloadSftpFile(ssh , remoteMechine.getTargetTempFile(), remoteMechine.getTargetLocalFile());
         return FileUtil.readFile(remoteMechine.getTargetLocalFile());
     }
 }
