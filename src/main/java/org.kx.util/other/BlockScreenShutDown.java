@@ -174,7 +174,7 @@ public class BlockScreenShutDown {
     //不能写中文 ， 拼音无法选择
     @Test
     public void getCharInt2() throws AWTException, IOException {
-        String z = FileUtil.readFile("/Users/xianguang/IdeaProjects/0910/huijin/settle-trademonitor/settle-trademonitor-service/src/main/java/com/alibaba/trademonitor/biz/dap/processor/AbstractMonitorPlanProcessor.java");
+        String z = FileUtil.readFile("/Users/xianguang/...java");
         writeBy(z);
     }
 
