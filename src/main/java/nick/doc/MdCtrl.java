@@ -23,7 +23,7 @@ public class MdCtrl {
 
     private boolean init = false;
     private String myJarPath = System.getProperty("user.home") + File.separator + "myDocs" + File.separator + "lli-util.jar";
-    List<MdDoc> docs = new ArrayList<>();
+    private List<MdDoc> docs = new ArrayList<>();
     private static MdCtrl mdCtrl = new MdCtrl();
 
     private MdCtrl() {
@@ -67,6 +67,14 @@ public class MdCtrl {
     public void init() {
         try {
             if (!init) {
+                String localJarPath ="/Users/xianguang/IdeaProjects/nick070809/lli-util/target/lli-util-1.0-SNAPSHOT.jar";
+                File localUtilJar  = new File(localJarPath);
+                if(localUtilJar.exists()){
+                    loadUtil(localJarPath);
+                    init = true ;
+                    return;
+                }
+
                 String appJarpath = "/Users/xianguang/IdeaProjects/nick070809/xian_app/xian/target/xian_app.jar";
                 File appJarFile = new File(appJarpath);
                 if (!appJarFile.exists()) {
@@ -81,18 +89,7 @@ public class MdCtrl {
                 InputStream inputStream = jarFile.getInputStream(jarFile.getJarEntry("BOOT-INF/lib/lli-util-1.0-SNAPSHOT.jar"));
                 IoUtil.DataInput2File(inputStream, myJarPath);
                 System.out.println("myJarPath ==== "+myJarPath);
-                docs = JarFileReader.list(myJarPath);
-
-                docs.stream().forEach(mdDoc -> {
-                    try {
-                        mdDoc.setOrigContent(JarFileReader.read(myJarPath, mdDoc.getPath()));
-                        read2Html(mdDoc);
-                        saveHtml2Cache(mdDoc);
-                    } catch (IOException e) {
-                        throw new RuntimeException("init mdDoc error " + mdDoc.getPath(), e);
-                    }
-
-                });
+                loadUtil(myJarPath);
                 init = true ;
             }
         } catch (Throwable ex) {
@@ -101,6 +98,20 @@ public class MdCtrl {
         }
     }
 
+    private  void loadUtil(String utilJarPath) throws IOException {
+        docs = JarFileReader.list(utilJarPath);
+
+        docs.stream().forEach(mdDoc -> {
+            try {
+                mdDoc.setOrigContent(JarFileReader.read(utilJarPath, mdDoc.getPath()));
+                read2Html(mdDoc);
+                saveHtml2Cache(mdDoc);
+            } catch (IOException e) {
+                throw new RuntimeException("init mdDoc error " + mdDoc.getPath(), e);
+            }
+
+        });
+    }
 
 
     public void loadself() {
@@ -128,5 +139,9 @@ public class MdCtrl {
     public String getDocList() throws Exception {
         HtmlGenerate htmlGenerate = new HtmlGenerate();
         return htmlGenerate.generateHerfList(docs, "name", "path");
+    }
+
+    public List<MdDoc> getDocs() {
+        return docs;
     }
 }

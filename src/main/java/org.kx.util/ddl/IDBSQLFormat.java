@@ -12,9 +12,9 @@ import java.util.List;
  */
 
 public class IDBSQLFormat {
-    static String EN_ = " "; //英文空格
-    static String CN_ = " "; ///中文空格
-    static String SPLIT_ = "'"; //分割符号
+   public  final static String EN_ = " "; //英文空格
+    public final static String CN_ = " "; ///中文空格
+    public  final static String SPLIT_ = "'"; //分割符号
 
     static String RIGHTFX = "hj,ts,tc,gmt"; //特定字符过滤
 

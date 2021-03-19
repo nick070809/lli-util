@@ -73,7 +73,7 @@ public class SSH {
             this.connClose();
         }
     }
-    private String exeCmd(String cmd) {
+    public String exeCmd(String cmd) {
         InputStream input = null;
         String rs = null;
         try {
@@ -100,7 +100,7 @@ public class SSH {
         return sb.toString();
     }
 
-    private boolean StartConn() throws IOException {
+    public boolean StartConn() throws IOException {
         boolean succeed = false;
         try {
             conn = new Connection(ip);
@@ -112,7 +112,7 @@ public class SSH {
         }
         return succeed;
     }
-    private  void connClose(){
+    public   void connClose(){
         conn.close();
     }
 

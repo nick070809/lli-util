@@ -4,6 +4,7 @@ import nick.doc.MdCtrl;
 import org.kx.util.FileUtil;
 import org.kx.util.generate.HtmlGenerate;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,6 +67,19 @@ public class Test {
                 "    <body>\n"+content+
                 "   </body>\n" +
                 "</html>" ;
+    }
+
+
+    @org.junit.Test
+    public void  sse() {
+        BigDecimal a = new BigDecimal(2);
+        BigDecimal b = new BigDecimal(3);
+        BigDecimal index = a.multiply(new BigDecimal(100)) .divide(b,0,BigDecimal.ROUND_HALF_UP);
+
+
+        //a.divide(b, 2, BigDecimal.ROUND_HALF_UP);
+
+        System.out.println(index.longValue());
     }
 
 

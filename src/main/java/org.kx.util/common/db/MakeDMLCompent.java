@@ -1,7 +1,7 @@
 package org.kx.util.common.db;
 
 import org.kx.util.FileUtil;
-import org.kx.util.base.StringUtil;
+import org.kx.util.base.str.StringUtil;
 import org.kx.util.generate.ObjectGenerate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

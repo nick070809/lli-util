@@ -1,9 +1,11 @@
 package unit;
 
-import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
+import org.kx.util.FileUtil;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Description ：
@@ -19,7 +21,31 @@ public class CommonTest {
     }
 
 
-    public static void main(String[] args) {
-        System.out.println(StringUtils.equalsIgnoreCase("1", null) );
+    @Test
+    public  void readToBufferFilterBlank() throws IOException {
+        StringBuffer sb = new StringBuffer();
+        FileUtil.readToBufferFilterBlank(sb, "/Users/xianguang/temp/tempx.txt");
+        System.out.printf(sb.toString());
     }
+
+
+
+
+    public static void main(String[] args) {
+        String s = "香港罚恶香港罚恶香港罚恶香港罚恶";
+        int index = s.charAt(8);
+        System.out.println(index);
+    }
+
+
+
+    @Test
+    public void map_() {
+       Map x = new HashMap();
+    }
+
+
+    @Test
+    public void pad_() {
+        System.out.println("\n".length());    }
 }

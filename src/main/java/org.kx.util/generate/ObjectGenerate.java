@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import org.kx.util.ClassUtil;
 import org.kx.util.DateUtil;
 import org.kx.util.base.BaseException;
-import org.kx.util.base.StringUtil;
+import org.kx.util.base.str.StringUtil;
 import org.kx.util.dto.Seller;
 
 import java.lang.reflect.Method;

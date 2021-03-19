@@ -5,11 +5,9 @@ import org.junit.Test;
 import org.kx.util.FileUtil;
 import org.kx.util.Validator;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -24,7 +22,7 @@ public class ODPS {
     //处理odps的文件
     @Test
     public void readOdpsFile() throws Exception {
-        String filePath = "/Users/xianguang/Downloads/down/odps.txt";
+        String filePath = "/Users/xianguang/Downloads/down/dapFlag.log"; //odps.txt
         InputStream is = new FileInputStream(filePath);
         InputStreamReader ireader = new InputStreamReader(is, "UTF-8");
         String line; // 用来保存每行读取的内容
@@ -42,6 +40,7 @@ public class ODPS {
         }
         reader.close();
         is.close();
+        //System.out.println(resultContent.toString());
         FileUtil.writeStringToFile(resultContent.toString(), "/Users/xianguang/Downloads/down/biz_order_ids.csv");
     }
 
@@ -115,7 +114,7 @@ public class ODPS {
         String[] words =  line.split(",");
         return   words[1];
     }
-    private  String parseLine(String line){
+    private  String parseLine(String line) throws UnsupportedEncodingException {
         if(StringUtils.isBlank(line)){
             return null;
         }
@@ -124,11 +123,15 @@ public class ODPS {
         }
         line = line.replace("\u001B[K", "");
 
-        String[] words = line.split(",");
-        if(clomunSize == 0){
-            clomunSize =words.length;
+        if(line.contains("code")){
+            line = line.replace(",code", "0code");
         }
-        if(words.length== 0 || words.length != clomunSize){
+
+        List<String> words  = parseChineseLine(line) ;
+        if(clomunSize == 0){
+            clomunSize =words.size();
+        }
+        if(words.size()== 0 || words.size() != clomunSize){
             return null;
         }
         StringBuilder sbt = new StringBuilder();
@@ -145,5 +148,34 @@ public class ODPS {
         }
         return sbt.toString();
     }
+
+
+    private  List<String> parseChineseLine(String st) throws UnsupportedEncodingException {
+        List<String> stt = new ArrayList();
+        if(Validator.containsChinese(st)){
+            String[] words = st.split(",");
+            StringBuilder stringBuilder = null ;
+            for(String word :words){
+                if(!Validator.containsChinese(word)){
+                    if(stringBuilder != null){
+                        stt.add(stringBuilder.toString());
+                    }
+                    stt.add(word);
+                    stringBuilder = null;
+                }else {
+                    if(stringBuilder == null){
+                        stringBuilder = new StringBuilder();
+                    }
+                    stringBuilder.append(word).append("_");
+                }
+            }
+        }else {
+          return   Arrays.asList(st.split(",") );
+        }
+        return  stt;
+    }
+
+
+
 
 }

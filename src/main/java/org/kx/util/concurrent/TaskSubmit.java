@@ -1,6 +1,6 @@
 package org.kx.util.concurrent;
 
-import org.kx.util.base.StringUtil;
+import org.kx.util.base.str.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;

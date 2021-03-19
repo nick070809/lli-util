@@ -1,4 +1,4 @@
-package org.kx.util.base;
+package org.kx.util.base.str;
 
 
 import com.alibaba.fastjson.JSON;
@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.kx.util.FileUtil;
+import org.kx.util.base.BaseException;
 import org.kx.util.config.SysConf;
 
 import java.io.*;
@@ -53,7 +54,7 @@ public class StringUtil {
         try {
             return JSONObject.parseObject(str);
         } catch (Exception e) {
-            throw new BaseException(BaseErrorCode.SystemError, "json转换错误");
+            throw new BaseException("json转换错误",e);
         }
     }
 
@@ -64,7 +65,7 @@ public class StringUtil {
         try {
             return JSONObject.parseArray(str);
         } catch (Exception e) {
-            throw new BaseException(BaseErrorCode.SystemError, "json to array 转换错误");
+            throw new BaseException("json to array 转换错误",e);
         }
     }
 
@@ -114,6 +115,18 @@ public class StringUtil {
 
 
     /**
+     * 反驼峰命名
+     */
+    public static String aaBb(String Aa_Bb) {
+        String [] words = Aa_Bb.split("_");
+        StringBuilder sbt = new StringBuilder();
+        for(String word :words){
+            sbt.append(org.kx.util.base.str.StringUtil.UpperFirstWord(word));
+        }
+        return org.kx.util.base.str.StringUtil.LowerFirstWord(sbt.toString());
+    }
+
+    /**
      * 文本长度
      */
     public static long getStringLenth(String str) {
@@ -125,9 +138,39 @@ public class StringUtil {
      * 多行合并为一行
      */
     public static String mergeLine(String str) {
+
+        List<String> words = new ArrayList<>();
         StringBuilder sbt = new StringBuilder();
         String[] strs = str.split("\n");
+
         for (String i : strs) {
+            String s = i.trim();
+            boolean special = false ;
+            if (StringUtils.isNotBlank(s)) {
+                if(s.contains(" ")){
+                    words.addAll( StringUtil.readWords(s));
+                    special = true ;
+                }
+                if(s.contains("，")){
+                    words.addAll( StringUtil.readWords(s,"，"));
+                    special = true ;
+                }
+                if(s.contains(",")){
+                    words.addAll( StringUtil.readWords(s,","));
+                    special = true ;
+                }
+                if(s.contains("、")){
+                    words.addAll( StringUtil.readWords(s,"、"));
+                    special = true ;
+                }
+                if(!special){
+                    words.add(s) ;
+                }
+            }
+        }
+
+
+        for (String i : words) {
             String s = i.trim();
             if (StringUtils.isNotBlank(s)) {
                 if(s.startsWith("\'") || s.startsWith("'")){
@@ -350,16 +393,46 @@ public class StringUtil {
     }
 
 
+    public  static List<String> readWords(String str){
+        List<String> words = new ArrayList<>();
+        String[] word_ = str.split(" ");
+        for(String w :word_){
+            if(StringUtils.isNotBlank(w)){
+                words.add(w);
+            }
+        }
+        return  words ;
+
+    }
+
+    public  static List<String> readWords(String str,String split){
+        List<String> words = new ArrayList<>();
+        String[] word_ = str.split(split);
+        for(String w :word_){
+            if(StringUtils.isNotBlank(w)){
+                words.add(w);
+            }
+        }
+        return  words ;
+
+    }
+
+
     public  static  String buildJosnHtml(String str){
-        if(StringUtils.isBlank(str)){
-            return  "" ;
+        try{
+            if(StringUtils.isBlank(str)){
+                return  "" ;
+            }
+            StringBuilder title = new StringBuilder();
+            Map<String,Object> mapType = JSON.parseObject(str,Map.class);
+            for (Object obj : mapType.keySet()){
+                title.append(obj+" = "+mapType.get(obj)+"<br/>");
+            }
+            return title.toString();
+        }catch (Exception ex){
+            throw  new RuntimeException("source line :" + str ,ex);
         }
-        StringBuilder title = new StringBuilder();
-        Map<String,Object> mapType = JSON.parseObject(str,Map.class);
-        for (Object obj : mapType.keySet()){
-            title.append(obj+" = "+mapType.get(obj)+"<br/>");
-        }
-        return title.toString();
+
     }
 
 
@@ -417,10 +490,23 @@ public class StringUtil {
 
     //属性生成
     public static String generateTcAttrStr(String attrs){
+       // System.out.println("attrs ----> " + attrs);
         String[] lines = attrs.split("\n");
         StringBuilder stv = new StringBuilder();
         for(String line :lines){
-            String[] atrr = line.split("\t");
+            if(StringUtils.isBlank(line)){
+                continue;
+            }
+            String[] atrr = null;
+            if(line.contains("\t")){
+                atrr = line.split("\t");
+               // System.out.println("line.contains t");
+            } else {
+                atrr = line.split(" ");
+               // System.out.println("line.contains ");
+            }
+            /*System.out.println("(atrr[0] "+ atrr[0]);
+            System.out.println("(atrr[1] "+ atrr[1]);*/
             stv.append(atrr[0]).append(":").append(atrr[1]).append(";");
         }
         return  stv.toString();
@@ -433,6 +519,10 @@ public class StringUtil {
 
 
         for(String line :lines){
+            if(StringUtils.isBlank(line)){
+                continue;
+            }
+
             String[] atrr = line.split("\t");
             BigDecimal fb = new BigDecimal(atrr[0]);
             String str =  sortStr(atrr[1]);
@@ -538,6 +628,7 @@ public class StringUtil {
                 stringBuilder = new StringBuilder();
                 sufixIndex ++  ;
             }
+
             stringBuilder.append(line).append(",");
             line = reader.readLine(); // 读取下一行
         }
@@ -550,9 +641,9 @@ public class StringUtil {
     }
 
     public static void main(String[] args) throws IOException {
-        List<String> files = readsuperLongTxt2File("/ids.xml",20000);
-        String targetZipPath = SysConf.upLoadPath  + "d_ids.zip";
-        FileZip.compress(targetZipPath, files);
+        String str ="1435979270899368073 1239112320264770605 1239018757298768803\n" +
+                "1460970936903920722 1238868783570768803 1238747497300333811";
+        System.out.println(StringUtil.mergeLine(str));
     }
 
 }

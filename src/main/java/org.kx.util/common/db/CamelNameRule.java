@@ -1,6 +1,6 @@
 package org.kx.util.common.db;
 
-import org.kx.util.base.StringUtil;
+import org.kx.util.base.str.StringUtil;
 
 /**
  * Created by sunkx on 2017/5/17.

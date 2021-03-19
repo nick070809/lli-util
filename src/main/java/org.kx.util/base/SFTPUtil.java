@@ -57,7 +57,9 @@ public class SFTPUtil {
 
 
 
-            InputStream inputStream = chSftp.get("/home/xianguang.skx/"+ftpPath);
+            //InputStream inputStream = chSftp.get("/home/xianguang.skx/"+ftpPath);
+
+            InputStream inputStream = chSftp.get(ftpPath);
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"utf-8"));
             String line = null;
             StringBuilder buffer = new StringBuilder();

@@ -2,7 +2,7 @@ package org.kx.util.common.db;
 
 import com.alibaba.fastjson.JSON;
 import org.kx.util.DateUtil;
-import org.kx.util.base.StringUtil;
+import org.kx.util.base.str.StringUtil;
 
 import java.lang.reflect.Field;
 import java.util.Date;

@@ -50,6 +50,14 @@ public class FileDb {
         return 1;
     }
 
+    public int insertWithoutBackUp(String fileName, String key, String value) throws IOException {
+        String filepath = System.getProperty("user.home") + File.separator + "filedb" + File.separator + fileName;
+        File file = new File(filepath);
+        createIfNotexsist(file);
+        write(file, key, value, true);
+        return 1;
+    }
+
 
     public int batchInsert(String fileName, HashMap<String, String> kv) throws IOException {
 
@@ -102,6 +110,14 @@ public class FileDb {
         return 1;
     }
 
+    public int deleteAll(String fileName) throws IOException {
+        String filepath = System.getProperty("user.home") + File.separator + "filedb" + File.separator + fileName;
+        File file = new File(filepath);
+        jsonObjectCache.remove(file.getName());
+        file.delete();
+        backup(fileName, "ALL", "ALL", "deleteFile");
+        return 1;
+    }
 
     public void backup(String fileName, String key, String value, String action) {
         //1、可以写个日志快照 ,便于db恢复
@@ -139,7 +155,7 @@ public class FileDb {
     }
 
     private void write(File file, String key, String value, boolean persistence) throws IOException {
-        JSONObject jsonObject = read2Json(file, false);
+        JSONObject jsonObject = read2Json(file, true);
         jsonObject.put(key, value);
         if (jsonObjectCache == null) {
             jsonObjectCache = new JSONObject();
@@ -194,6 +210,27 @@ public class FileDb {
             jsonObjectCache.put(file.getName(), jsonContent);
         }
         return jsonContent;
+    }
+
+
+    /**
+     * 只读取一次
+     * 是否读取文本
+     */
+    public JSONObject read2JsonWithoutCache(String fileName) throws IOException {
+        String filepath = System.getProperty("user.home") + File.separator + "filedb" + File.separator + fileName;
+        File file = new File(filepath);
+        String fileContent = readFile(file);
+        if (StringUtils.isNotBlank(fileContent)) {
+            JSONObject jsonContent = JSONObject.parseObject(fileContent);
+            if (jsonObjectCache == null) {
+                jsonObjectCache = new JSONObject();
+            }
+            jsonObjectCache.put(file.getName(), jsonContent);
+            return jsonContent;
+        }
+
+        return new JSONObject();
     }
 
 

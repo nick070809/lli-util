@@ -43,6 +43,12 @@ public class HtmlGenerate<T> {
                 if(addUrl != null && addTitle != null){
                     continue;
                 }
+                 if("DOC-security".equals(addTitle)){
+                     continue;
+                 }
+                 if(addTitle != null && addTitle.startsWith("CODE-")){
+                     continue;
+                 }
                 // <a href="pages/util/updateOrderAttri.html">删除订单属性</a>&nbsp;&nbsp;&nbsp;
                 // <a href="javascript:0" id="b01" type="button" onclick="sendRequest();"> 》》》</a>
                  //console.log  sendRequest

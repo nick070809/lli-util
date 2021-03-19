@@ -65,6 +65,28 @@ public class FileUtil {
         is.close();
     }
 
+
+    /**
+     * 将文本文件中的内容读入到buffer中
+     */
+    public static void readToBufferFilterBlank(StringBuffer buffer, String filePath) throws IOException {
+        InputStream is = new FileInputStream(filePath);
+        InputStreamReader ireader = new InputStreamReader(is, "UTF-8");
+        String line; // 用来保存每行读取的内容
+        BufferedReader reader = new BufferedReader(ireader);
+        line = reader.readLine(); // 读取第一行
+        while (line != null) { // 如果 line 为空说明读完了
+            if(StringUtils.isNotBlank(line)){
+                buffer.append(line); // 将读到的内容添加到 buffer 中
+                buffer.append("\n"); // 添加换行符
+            }
+            line = reader.readLine(); // 读取下一行
+        }
+        reader.close();
+        is.close();
+    }
+
+
     /**
      * 读取文本文件内容
      */
@@ -72,6 +94,26 @@ public class FileUtil {
         StringBuffer sb = new StringBuffer();
         FileUtil.readToBuffer(sb, filePath);
         return sb.toString();
+    }
+
+    /**
+     * 读取文本文件内容
+     */
+    public static List<String> readFileLines(String filePath) throws IOException {
+        List<String> lines = new ArrayList<>();
+
+        InputStream is = new FileInputStream(filePath);
+        InputStreamReader ireader = new InputStreamReader(is, "UTF-8");
+        String line; // 用来保存每行读取的内容
+        BufferedReader reader = new BufferedReader(ireader);
+        line = reader.readLine(); // 读取第一行
+        while (line != null) { // 如果 line 为空说明读完了
+            lines.add(line);
+            line = reader.readLine(); // 读取下一行
+        }
+        reader.close();
+        is.close();
+        return  lines;
     }
 
 
